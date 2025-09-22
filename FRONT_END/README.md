@@ -12,11 +12,11 @@ It's developed with **React + TypeScript + Vite** for a fast and modern applicat
 
 ## ⚙️ Configuration
 
-To quickly initialize the structure and configuration of the FRONT_END folder, in the terminal we enter the command:
+<pre>To quickly initialize the structure and configuration of the FRONT_END folder, in the terminal we enter the command:
       npm create vite@latest
 
 When running the command, Vite guides the user through several choices to customize their project (folder name, framework, languages).
-Once **React + TypeScript** is selected, Vite installs the configured folders and files by default:
+Once **React + TypeScript** is selected, Vite installs the configured folders and files by default:</pre>
 
 ### 🌳 Default tree structure
 
@@ -24,8 +24,6 @@ FRONT_END/
 │  index.html
 │  package.json
 │  tsconfig.json
-│  tsconfig.app.json
-│  tsconfig.node.json
 │  vite.config.ts
 │  eslint.config.js
 │  .gitignore
@@ -33,7 +31,7 @@ FRONT_END/
 │
 ├─ public/
 │   vite.svg
-|
+│
 └─ src/
    │  App.css
    │  App.tsx
@@ -45,8 +43,9 @@ FRONT_END/
         react.svg
 
 
+
 ### ⚠️ ALERT
-<h1>Caution: Do not move or delete configuration files (<i>vite.config.ts</i>, <i>tsconfig.json</i>, <i>eslint.config.js</i>, etc.) or you may break the project.</h1>
+<h2>Caution: Do not move or delete configuration files (<i>vite.config.ts</i>, <i>tsconfig.json</i>, <i>eslint.config.js</i>, etc.) or you may break the project.</h2>
 
 
 ### Files installed by default:
@@ -107,8 +106,8 @@ src/
 │    PostCard.tsx
 │    Comment.tsx
 │    Loader.tsx
-│    (ProtectedRoute.tsx)               # Optional
-|
+│    (ProtectedRoute.tsx)   # Optional
+│
 ├─ pages/
 │    Home.tsx
 │    Login.tsx
@@ -140,7 +139,7 @@ src/
 ## 💻 To-do list Frontend
 
 I.
-**pages/**
+**pages/**</br>
 Contains the main pages of the application (Home, Login, Signup, Profile, NotFound):
 
 - Login.tsx → Login page (email/password form).
@@ -150,7 +149,7 @@ Contains the main pages of the application (Home, Login, Signup, Profile, NotFou
 - NotFound.tsx → 404 page to manage non-existent routes.
 
 II.
-**components/**
+**components/**</br>
 Contains reusable components (Navbar, PostCard, Loader, etc.). This avoids code duplication when the same element is used on multiple pages:
 
 - Navbar.tsx → Navigation bar (Home, Profile, Logout links).
@@ -160,14 +159,14 @@ Contains reusable components (Navbar, PostCard, Loader, etc.). This avoids code 
 - ProtectedRoute.tsx (optional) → Component to protect routes (redirects to login if not logged in).
 
 III.
-**context/**
+**context/**</br>
 Centralizes the global state of the application with the React Context system:
 Example: Store logged-in user information for use anywhere.
 
 - AuthContext.tsx → to store the logged-in user state.
 
 IV.
-**services/**
+**services/**</br>
 Contains the logic for interacting with the API (HTTP requests to the backend):
 Example: authService.ts for login/signup, postService.ts for managing posts.
 
@@ -177,14 +176,14 @@ Example: authService.ts for login/signup, postService.ts for managing posts.
 - userService.ts → Manages users. To access profiles and edit information.
 
 V.
-**hooks/**
+**hooks/**</br>
 Contains custom React hooks (reusable logic):
 Example: useAuth to check if the user is logged in.
 
 - useAuth.ts → custom hook for easy access to AuthContext
 
 VI
-**types/**
+**types/**</br>
 Contains TypeScript interfaces (User, Post, Comment, etc.). This provides a strict framework for data and prevents typing errors:
 
 - user.ts → Defines a user's properties. Used everywhere there is a user (profile, post author, auth).
@@ -192,7 +191,7 @@ Contains TypeScript interfaces (User, Post, Comment, etc.). This provides a stri
 - comment.ts → Defines the structure of a comment. Used to type comments in posts.
 
 VII.
-**router/**
+**router/**</br>
 Manages application route configuration with React Router:
 Example: Define /login, /signup, /profile/:id.
 
@@ -204,16 +203,16 @@ Example: Define /login, /signup, /profile/:id.
 The project launch is done in two stages:
 
 1. <h4>Install the dependencies</h4>
-Directly in the **FRONT_END/** folder, run the command:
-npm install
-This will download all the dependencies listed in *package.json*, then store them in a huge **node_modules/** folder at the root of the project.
+<pre>Directly in the **FRONT_END/** folder, run the command:
+     npm install
+This will download all the dependencies listed in <i>package.json</i>, then store them in a huge <strong>node_modules/</strong> folder at the root of the project.</pre>
 
 2. <h4>Start the development server</h4>
-Still in the **FRONT_END/** folder, run the project in development mode:
-npm run dev
+<pre>Still in the <strong>FRONT_END/</strong> folder, run the project in development mode:
+     npm run dev
 This starts a local Vite server. By default, the Vite project will be accessible at:
   http://localhost:5173/
-
+</pre>
 
 
 ### Auteur
