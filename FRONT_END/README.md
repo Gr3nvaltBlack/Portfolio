@@ -14,7 +14,7 @@ It's developed with **React + TypeScript + Vite** for a fast and modern applicat
 
 To quickly initialize the structure and configuration of the FRONT_END folder, in the terminal we enter the command:
      <pre>
-     ```bash npm create vite@latest```
+     ```npm create vite@latest```
      </pre>
 
 When running the command, Vite guides the user through several choices to customize their project (folder name, framework, languages).
@@ -207,14 +207,14 @@ The project launch is done in two stages:
 1. <h4>Install the dependencies</h4>
 Directly in the **FRONT_END/** folder, run the command:
      <pre>
-     ```bash npm install```
+     ```npm install```
      </pre>
 This will download all the dependencies listed in <i>package.json</i>, then store them in a huge <strong>node_modules/</strong> folder at the root of the project.
 
 2. <h4>Start the development server</h4>
 Still in the <strong>FRONT_END/</strong> folder, run the project in development mode:
      <pre>
-     ```bash npm run dev```
+     ```npm run dev```
      </pre>
 This starts a local Vite server. By default, the Vite project will be accessible at:
   <pre>http://localhost:5173/</pre>
