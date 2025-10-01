@@ -1,0 +1,6 @@
+express         # Web framework for building server and handling routes
+mongoose        # MongoDB ODM to define schemas and interact with the database
+dotenv          # Load environment variables from a .env file
+bcrypt          # Hash passwords securely before saving to the database
+jsonwebtoken    # Create and verify JWT tokens for authentication
+cors            # Enable Cross-Origin Resource Sharing so frontend can access the backend
