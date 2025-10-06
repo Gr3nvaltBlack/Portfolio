@@ -1,4 +1,4 @@
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
@@ -13,6 +13,6 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.findByEmail = function(email) {
   return this.findOne({ email });
 };
-// Instance method to check password (dummy implementation)
+
 const User = mongoose.model('User', userSchema);
 module.exports = User;
