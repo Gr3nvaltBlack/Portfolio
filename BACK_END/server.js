@@ -1,10 +1,11 @@
-const http = require('http');
+const express = require('express');
+const port = 5000; // Define the port
 
-const server = http.createServer((req, res) => {
-    // send a test response
-    res.end('Test server');
-});
+const app = express(); // Create express app
+app.use(express.json()); // Middleware to parse JSON
 
-server.listen(5000, () => {
-    console.log('Server is running on port 5000');
+app.use('/user', require("./routes/userRoutes")); // User routes
+
+app.listen(port, () => { // Start the server
+    console.log('Server is running on port ' + port);
 })
