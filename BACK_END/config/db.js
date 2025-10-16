@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
+// Connect to MongoDB 
 mongoose.connect(process.env.MONGO_URI, {
     useNewParser: true,
     useUnifiedTopology: true,
