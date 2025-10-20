@@ -89,7 +89,7 @@ Creating new folders and files for back logic:
 │   └── 📄 Comment.model.js
 │
 ├── 📁 controllers/
-│   ├── 📄 auth.Controller.js
+│   ├── 📄 auth.controller.js
 │   ├── 📄 user.controller.js
 │   ├── 📄 post.controller.js
 |   ├── 📄 recipe.controller.js
@@ -132,35 +132,35 @@ II.
 Data Structure
 Defines Mongoose schemas for each entity (User, Post,...).
 
-- user.js → user schema (name, email, hashed password, role, etc.).
-- post.js → post schema (content, author, likes, comments).
-- recipe.js → recipe schema (title, ingredients, steps, photo, author, etc.).
-- comment.js → schema for comments linked to a post or recipe.
-- message.js → schema for private messaging (sender, receiver, content, date, etc.).
+- user.model.js → user schema (name, email, hashed password, role, etc.).
+- post.model.js → post schema (content, author, likes, comments).
+- recipe.model.js → recipe schema (title, ingredients, steps, photo, author, etc.).
+- comment.model.js → schema for comments linked to a post or recipe.
+- message.model.js → schema for private messaging (sender, receiver, content, date, etc.).
 
 III.
 **controllers/**</br>
 Processing Logic
 Receives requests, calls services, and returns HTTP responses.
 
-- authController.js → Manages registration, login, and JWT token generation.
-- userController.js → Manages profile information and user modifications.
-- postController.js → CRUD for feed posts.
-- recipeController.js → CRUD for recipes.
-- commentController.js → Manages comments (adding, deleting, reading).
-- messageController.js → Sends and receives private messages.
+- auth.controller.js → Manages registration, login, and JWT token generation.
+- user.controller.js → Manages profile information and user modifications.
+- post.controller.js → CRUD for feed posts.
+- recipe.controller.js → CRUD for recipes.
+- comment.controller.js → Manages comments (adding, deleting, reading).
+- message.controller.js → Sends and receives private messages.
 
 IV.
 **routes/**</br>
 API Endpoints
 Manages URLs and binds each route to its controller.
 
-- authRoutes.js → public routes (login, signup).
-- userRoutes.js → protected routes for profiles.
-- postRoutes.js → CRUD routes for posts.
-- recipeRoutes.js → CRUD routes for recipes.
-- commentRoutes.js → CRUD routes for comments.
-- messageRoutes.js → routes for messaging.
+- auth.routes.js → public routes (login, signup).
+- user.routes.js → protected routes for profiles.
+- post.routes.js → CRUD routes for posts.
+- recipe.routes.js → CRUD routes for recipes.
+- comment.routes.js → CRUD routes for comments.
+- message.routes.js → routes for messaging.
 
 V.
 **middlewares/**</br>
@@ -187,6 +187,6 @@ Contains images or files that users upload.
 
 ## 🚀 Project launch
 
-### Auteur
+### Author
 - Lentz Gonzalez (Gr3nvaltBlack)
 - Georges Menheim (georges479)
