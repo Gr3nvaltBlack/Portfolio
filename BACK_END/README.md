@@ -14,6 +14,8 @@ It is developed with **Node.js + Express** for the application logic, and **Mong
 
 ## ⚙️ Configuration
 
+<h4 align="center">PART I</h4>
+
 To configure the project in the BACK_END folder, run the following command:
     <pre>
     ```npm init -y```
@@ -33,6 +35,16 @@ Installing the tools needed to launch our server, we run a new command:
     </pre>
 This installs the Express web framework for node.js, then nodemon, a tool that automatically restarts our server every time a file is modified, and the dotenv module, which will allow us to manage environment variables from a *.env* file. All three have been added to the dependencies section of your package.json.
 
+<h4 align="center">PART II</h4>
+
+To start defining our schemas (user, post, etc...), we run a new command:
+    <pre>
+    ```npm install --save mongoose ```
+    </pre>
+It allows you to:
+- Define schemas (data structures, types, validations, etc.) for your MongoDB collections,
+- Interact more easily with the database (CRUD, queries, relationships, etc.),
+- Add business logic directly to your models.
 
 ### 🌳 Default tree structure
 <pre>
@@ -71,24 +83,24 @@ Creating new folders and files for back logic:
 |   └── 📄 .env
 │
 ├── 📁 models/
-│   ├── 📄 User.js
-│   ├── 📄 Post.js
-|   ├── 📄 Recipe.js
-│   └── 📄 Comment.js
+│   ├── 📄 User.model.js
+│   ├── 📄 Post.model.js
+|   ├── 📄 Recipe.model.js
+│   └── 📄 Comment.model.js
 │
 ├── 📁 controllers/
-│   ├── 📄 authController.js
-│   ├── 📄 userController.js
-│   ├── 📄 postController.js
-|   ├── 📄 recipeController.js
-│   └── 📄 commentController.js
+│   ├── 📄 auth.Controller.js
+│   ├── 📄 user.controller.js
+│   ├── 📄 post.controller.js
+|   ├── 📄 recipe.controller.js
+│   └── 📄 comment.controller.js
 │
 ├── 📁 routes/
-│   ├── 📄 authRoutes.js
-│   ├── 📄 userRoutes.js
-│   ├── 📄 postRoutes.js
-|   ├── 📄 recipeRoutes.js
-│   └── 📄 commentRoutes.js
+│   ├── 📄 auth.routes.js
+│   ├── 📄 user.routes.js
+│   ├── 📄 post.routes.js
+|   ├── 📄 recipe.routes.js
+│   └── 📄 comment.routes.js
 │
 ├── 📁 middlewares/
 │   ├── 📄 authMiddleware.js

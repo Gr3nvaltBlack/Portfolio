@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const commentSchema = require('./comment.model')
 
 // Define the Post schema
 const PostSchema = new mongoose.Schema({
@@ -21,21 +22,15 @@ const PostSchema = new mongoose.Schema({
     },
     likers: {
         type: [String],
-        required: true,
     },
     comments: {
-        type: [commentsSchema],
-        required: true,
+        type: [commentSchema],
     },
-    createdAt: {
-        types: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+},
+{
+    timestamps: true
+}
+);
 
 // Export the Post model
 module.exports = mongoose.model('Post', PostSchema);
