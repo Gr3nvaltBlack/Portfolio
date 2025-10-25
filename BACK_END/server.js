@@ -6,8 +6,13 @@ require('dotenv').config({path: './config/.env'});
 // Connect to MongoDB
 connectDB();
 
-// Initialize Express application
+    /* -----Initialize Express application----- */
 const app = express();
+// Allows Express to understand requests with a JSON-formatted body
+app.use(express.json());
+// Allows Express to read data submitted via forms
+app.use(express.urlencoded({ extended: true }));
+
 
 // Redirects all routes
 app.use('/api/user', require('./routes/userRoutes'));
