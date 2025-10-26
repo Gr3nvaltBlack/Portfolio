@@ -33,9 +33,7 @@ Installing the tools needed to launch our server, we run a new command:
     <pre>
     ```npm install --save express nodemon dotenv ```
     </pre>
-This installs the Express web framework for node.js, then nodemon, a tool that automatically restarts our server every time a file is modified, and the dotenv module, which will allow us to manage environment variables from a *.env* file. All three have been added to the dependencies section of your package.json.
-
-<h4 align="center">PART II</h4>
+This installs the Express web framework for node.js, then nodemon, a tool that automatically restarts our server every time a file is modified, and the dotenv module, which will allow us to manage environment variables from a *.env* file. All three have been added to the dependencies section of your package.json.</br>
 
 To start defining our schemas (user, post, etc...), we run a new command:
     <pre>
@@ -44,7 +42,40 @@ To start defining our schemas (user, post, etc...), we run a new command:
 It allows you to:
 - Define schemas (data structures, types, validations, etc.) for your MongoDB collections,
 - Interact more easily with the database (CRUD, queries, relationships, etc.),
-- Add business logic directly to your models.
+- Add business logic directly to your models.</br>
+
+<h4 align="center">PART II</h4>
+
+When creating our user schema in models/user.model.js, we run the command:
+    <pre>
+    ```npm install -s validator```
+    </pre>
+Validator is a package that allows you to easily verify and validate data; like our user schemas, we use it for email verification and validation.</br>
+
+To encrypt the user's password, we run again a new command:
+    <pre>
+    ```npm install -s bcrypt```
+    </pre>
+When a user creates an account, their password should never be stored in clear text in the database. To do this, bcrypt transforms it before saving it.</br>
+
+To manage secure user logins to our website, we run the command:
+    <pre>
+    ```npm install -s jsonwebtoken```
+    </pre>
+Jsonwebtoken allows you to create, sign, and verify JWT tokens. These tokens are used to prove a user's identity without having to reconnect them for each request.</br>
+
+When creating our middleware files, we run the command:
+    <pre>
+    ```npm install -s cookie-parser```
+    </pre>
+This will be used to read and manipulate HTTP cookies sent by browsers.</br>
+
+For managing files sent by users, we run the command:
+    <pre>
+    ```npm install -s multer```
+    </pre>
+Multer is a node.js middleware specifically designed to handle multipart/form-data, i.e. requests containing files.
+
 
 ### 🌳 Default tree structure
 <pre>
@@ -186,6 +217,28 @@ Contains images or files that users upload.
 
 
 ## 🚀 Project launch
+
+In the backend there are 2 ways to launch the project:
+
+1. <h4>Run the file directly</h4>
+At the root of the **BACK_END** ​​folder, run the command:
+    <pre>
+    ```node server.js```
+    </pre>
+This is a straightforward and straightforward way to run a Node.js project. It's simple and fast, and good for testing, but:
+- Not practical if the input file changes
+- No way to add custom options without retyping
+- Can't easily automate multiple commands
+
+2. <h4>Run the "start" script from package.json</h4>
+Apres quelques configurations dans le package.json, run the command:
+    <pre>
+    ```npm start```
+    </pre>
+The second method does the same as the first but with more flexibility. Why the second method is preferable:
+- Ability to change the startup command
+- npm manages certain environment variables and the project path for you
+- This is an expected standard in Node.js hosting
 
 ### Author
 - Lentz Gonzalez (Gr3nvaltBlack)
