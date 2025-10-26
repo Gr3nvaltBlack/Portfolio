@@ -1,66 +1,127 @@
 const CommentModel = require('../models/comment.model');
 const UserModel = require('../models/User');
 const PostModel = require('../models/post.model');
+const RecipeModel = require('../models/recipe');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 
-    /* -----Create a new comment for a post or recipe----- */
+            /* =====Create a new comment for a post or recipe===== */
 module.exports.createComment = async (req, res) => {
-    const newComment = new CommentModel({
-        userId: req.body.userId,
-        text: req.body.text,
-    });
+    
+    const postId = req.params.postId;
+    const recipeId =req.params.recipeId;
+
+     // Check if the ID is valid
+    if (postId && !ObjectId.isValid(postId)) {
+        return res.status(400).send({ message: 'ID is not a valid' });
+    }
+    if (recipeId && !ObjectId.isValid(recipeId)) {
+        return res.status(400).send({ message: 'ID is not a valid' });
+    }
+    // Check comment ownership
+    if (!postId && !recipeId) {
+        return res.status(400).send({ message: 'A comment must belong to a post or recipe.' })
+    }
+    if (postId && recipeId) {
+        return res.status(400).send({ message: 'A comment cannot be linked to two entities.' })
+    }
     try {
-        await newComment.save()
-        res.status(201).json(newComment)
-    } catch (error) {
-        res.status(400).send({ message: 'Error creating post: ' + error });
+        if (postId) {
+            const newComment = new CommentModel({
+                userId: req.body.userId,
+                text: req.body.text,
+                postId,  
+            });
+            const savedComment = await newComment.save()
+            await PostModel.findByIdAndUpdate(
+                req.params.postId,
+                {
+                    $push: {comments: savedComment}
+                },
+                { new: true }
+            )
+        } else if (recipeId) {
+            const newComment = new CommentModel({
+                userId: req.body.userId,
+                text: req.body.text,
+                recipeId,
+            });
+            const savedComment = await newComment.save()
+            await RecipeModel.findByIdAndUpdate(
+                req.params.recipeId,
+                {
+                    $addToSet: {comments: savedComment}
+                },
+                { new: true }
+            )
+        }
+        res.status(201).json({ message: 'The comment has been added' })
+    } catch (err) {
+        res.status(400).send({ message: 'Error creating comment: ' + err });
     }
 }
 
 
-    /* -----Update a comment by ID for a post or recipe----- */
+            /* =====Update a comment by ID for a post or recipe===== */
 module.exports.updateComment = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('the' + req.params.id + ' is not a valid ID');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     // What we want to update
     const updatedComment = {
         text: req.body.text,
     }
+
     // Find the comment by ID and update it
     try {
-        await CommentModel.findByIdAndUpdate(
-            {_id: req.params.id},
+        // Find the comment first
+        const comment = await CommentModel.findById(req.params.id,);
+        if (comment === null) {
+            return res.status(404).send({ message: 'Comment not found' });
+        }
+
+        // Check if the user is the owner of the comment to update
+        if (comment.userId !== req.body.userId) {
+            return res.status(403).send({ message: 'You are not authorized to update this comment' });
+        }
+
+        const commentToUpdate = await CommentModel.findByIdAndUpdate(
+            req.params.id,
             {$set: updatedComment},
             {
                 new: true,
                 runValidators: true
             },
         )
-        if (!error) {
-                res.status(200).json(docs);
-            } else {
-                res.status(400).send({ message: error });
-            }
-        } catch (error) {
-            res.status(400).send({ message: error });
-        }
+        res.status(200).json({ message: 'The comment has been updated' });
+    } catch (err) {
+        res.status(400).send({ message: 'Error to updated comment: ' + err });
+    }
 }
 
 
-    /* -----Delete a comment by ID for a post or recipe----- */
+            /* =====Delete a comment by ID for a post or recipe===== */
 module.exports.deleteComment = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('the' + req.params.id + ' is not a valid ID');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
+
     // Find the comment by ID and delete it
     try {
-        await CommentModel.findByIdAndDelete({_id: req.params.id}).exec();
-        res.status(200).send({ message: 'Comment deleted succesfully' });
-    } catch (error) {
-        res.status(400).send(error.message);
+        const comment = await CommentModel.findById(req.params.id);
+        if (!comment) {
+            return res.status(404).send({ message: 'Comment not found' })
+        }
+        // Check if the user is the owner of the comment to delete
+        if (comment.userId !== req.body.userId) {
+            return res.status(403).send({ message: 'You cannot delete this comment.' })
+        }
+
+        const commentToDelete = await CommentModel.findByIdAndDelete(req.params.id);
+        res.status(200).send({ message: 'Comment deleted succesfully', deleted: commentToDelete });
+    } catch (err) {
+        res.status(400).send({ message: 'Error deleted comment: ' + err });
     }
 }
