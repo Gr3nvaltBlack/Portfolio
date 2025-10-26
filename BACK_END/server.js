@@ -1,16 +1,16 @@
 const express = require('express');
-const app = express(); // Create express app
+const connectDB = require('./config/db'); // Import database configuration
 const userRoutes = require('./routes/user.routes');
-const connectDB = require('./config/db');
+const postRoutes = require('./routes/post.routes');
+const commentRoutes = require('./routes/comment.routes');
 require('dotenv').config({path: './config/.env'});
 
-require('dotenv').config({path: './config/.env'});
-require('./config/db'); // Import database configuration
+const app = express(); // Create express app
 
 // Added routes
-app.use('/api/post', require('./routes/post.routes')); // Post routes
-app.use('/api/comment', require('./controllers/comment.controller')); // Comment routes
 app.use(express.json()); // Middleware to parse JSON
+app.use('/api/post', postRoutes); // Post routes
+app.use('/api/comment', commentRoutes); // Comment routes
 app.use('/api/users', userRoutes); // Use user routes
 
 connectDB(); // Connect to the database
