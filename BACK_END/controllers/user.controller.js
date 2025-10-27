@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User.model');
+const { isJWT } = require('validator');
 
 // Register user
 exports.userRegister = async (req, res) => {
@@ -42,8 +43,15 @@ exports.userLogin = async (req, res) => {
                                 message: 'Password is incorrect'
                         });
                 }
-                res.status(200).json({
-                        message: 'Connected successfully'
+                const token = jwt.sign(
+                        { id: findUser._id, email: findUser.email },
+                        process.env.JWT_SECRET,
+                        { expiresIn: process.env.EXPIRES_IN }
+                );
+
+                return res.status(200).json({
+                        message: 'Connected successfully',
+                        token
                 });
         } catch (err) {
                 console.log(err);

@@ -1,11 +1,9 @@
 const CommentModel = require('../models/comment.model');
-const UserModel = require('../models/User');
-const PostModel = require('../models/post.model');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 
     /* -----Create a new comment for a post or recipe----- */
-module.exports.createComment = async (req, res) => {
+exports.createComment = async (req, res) => {
     const newComment = new CommentModel({
         userId: req.body.userId,
         text: req.body.text,
@@ -20,7 +18,7 @@ module.exports.createComment = async (req, res) => {
 
 
     /* -----Update a comment by ID for a post or recipe----- */
-module.exports.updateComment = async (req, res) => {
+exports.updateComment = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send('the' + req.params.id + ' is not a valid ID');
@@ -51,7 +49,7 @@ module.exports.updateComment = async (req, res) => {
 
 
     /* -----Delete a comment by ID for a post or recipe----- */
-module.exports.deleteComment = async (req, res) => {
+exports.deleteComment = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send('the' + req.params.id + ' is not a valid ID');
