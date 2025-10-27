@@ -3,7 +3,7 @@ const UserModel = require('../models/User.model');
 const ObjectId = require('mongoose').Types.ObejectId;
 
 
-    /* -----Create a new post for a user----- */
+            /* =====Create a new post for a user===== */
 module.exports.createPost = (req, res) => {
     const newPost = new PostModel({
         userId: req.body.userId,
@@ -19,139 +19,186 @@ module.exports.createPost = (req, res) => {
 }
 
 
-    /* -----Recover all posts----- */
-module.exports.getAllPosts = (req, res) => {
-    PostModel.find((err, docs) => {
-        if (!err) {
-            res.status(200).json(docs)
-        } else {
-            console.error('Error to get post: ' + err);
-        }
-    });
+            /* =====Recover all posts===== */
+module.exports.getAllPosts = async (req, res) => {
+    try {
+        const posts = await PostModel.find()
+            res.status(200).json(posts)
+    } catch (err) {
+        res.status(500).send({ message: 'Failed to retrieve posts: ' + err });
+    }
 }
 
 
-    /* -----Recover a single post by ID----- */
-module.exports.getPostById = (req, res) => {
+            /* =====Recover a single post by ID===== */
+module.exports.getPostById = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('the ' + req.params.id + ' is not a valid ID');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     // Find the post by ID and return it
-    PostModel.findById(req.params.id, (err, docs) => {
-        if (!err) {
-            res.status(200).json(docs);
-        } else {
-            console.log('Error to get this post: ' + err);
+    try {
+        // If the post does not exist
+        const post = await PostModel.findById(req.params.id)
+        if (!post) {
+            return res.status(404).send({ message: 'Post not found' })
         }
-    })
+            res.status(200).json(post);
+        } catch (err) {
+            res.status(500).send({ message: 'Failed to retrieve this post: ' + err });
+        }   
 }
 
 
-    /* -----Update a post by ID----- */
+            /* =====Update a post by ID===== */
 module.exports.updatePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('the' + req.params.id + ' is not a valid ID');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
+
     // What we want to update
     const updatedPost = {
         title: req.body.title,
         content: req.body.content,
     }
+
     // Find the post by ID and update it
-    PostModel.findByIdAndUpdate(
-        {_id: req.params.id},
-        {$set: updatedPost},
-        {
-            new: true,
-            setDefaultsOnInsert: true,
-            runValidators: true
-        },
-        (err, docs) => {
-            if (!err) {
-                res.status(200).json(docs);
-            } else {
-                res.status(400).send({ message: err });
-            }
+    try {
+        // Find the post first
+        const post = await PostModel.findById( req.params.id);
+        if (!post) {
+            return res.status(404).send({ message: 'Post not found' })
         }
-    )
+        // Check if the user is the owner of the post to update
+        if (post.userId !== req.body.userId) {
+            return res.status(403).send({ message: 'You are not authorized to update this post' })
+        }
+
+        const updatedPost = await PostModel.findByIdAndUpdate(
+            req.params.id,
+            {$set: updatedPost},
+            {
+                new: true,
+                setDefaultsOnInsert: true,
+                runValidators: true
+            },
+        )
+            res.status(200).json(updatedPost);
+    } catch (err) {
+        res.status(400).send({ message: 'Error to update the post: ' + err });
+    }
 }
 
 
-    /* -----Delete a post by ID----- */
+            /* =====Delete a post by ID===== */
 module.exports.deletePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('Invalid post ID format');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
+
     // Find the post by ID and delete it
     try {
-        await PostModel.findByIdAndDelete({_id: req.params.id}).exec();
-        res.status(200).send({ message: 'Post deleted successfully' });
+        // If the post does not exist
+        const post = await PostModel.findById(req.params.id);
+        if (!post) {
+            return res.status(404).send({ message: 'Post not found'})
+        }
+        // Check if the user is the owner of the post to delete
+        if (post.userId !== req.body.userId) {
+            return res.status(403).send({ message: 'You cannot delete this post.' })
+        }
+
+        const postToDelete = await PostModel.findByIdAndDelete(req.params.id);
+        res.status(200).send({ message: 'Post deleted successfully', deleted: postToDelete });
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({ message: 'Error deleted post' + err });
     }
 }
 
 
-    /* -----Like a post----- */
+            /* =====Like a post===== */
 module.exports.likePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('Invalid post ID format');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     try {
-        await PostModel.findByIdAndUpdate(
+        // Check if the post exists
+        const post = await PostModel.findById(req.params.id);
+        if (!post) {
+            return res.status(404).send({ message: 'Post not found'})
+        }
+        const updatedPost = await PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $addToSet: { likers: req.body.id },
+                $addToSet: { likers: req.body.userId },
             },
-            { new: true }
-        )
-        res.status(200).send(res);
-        await UserModel.findByIdAndUpdate(
-            req.params.id,
+            { new: true },
+        );
+
+        // Check if the user exists
+        const user = await UserModel.findById(req.body.userId);
+        if (!user) {
+            return res.status(404).send({ message: 'the user does not exist'})
+        }
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            req.body.userId,
             {
                 $addToSet: { likes: req.params.id },
             },
-            { new: true }
+            { new: true },
         )
-        res.status(200).send(res);
+        res.status(200).json({
+            message: 'Post likes succesfully',
+            updatedPost,
+            updatedUser
+        });
     } catch (err) {
-        if (err) {
-            res.status(400).send(err)
-        }
+        res.status(400).send({ message: 'Cannot like this post' + err });
     }
 }
 
 
-    /* -----Unlike a post----- */
+            /* =====Unlike a post===== */
 module.exports.unlikePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('Invalid post ID format');
+        return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     try {
-        await PostModel.findByIdAndUpdate(
+        // Check if the post exists
+        const post = await PostModel.findById(req.params.id);
+        if (!post) {
+           return res.status(404).send({ message: 'Post not found'}) 
+        }
+        const updatedPost = await PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $pull: { likers: req.body.id},
+                $pull: { likers: req.body.userId},
             },
-            { new: true }
-        )
-        res.status(200).send(res);
-        await UserModel.findByIdAndUpdate(
-            req.params.id,
+            { new: true },
+        );
+
+        // Check if the user exists
+        const user = await UserModel.findById(req.body.userId);
+        if (!user) {
+            return res.status(404).send({ message: 'the user does not exist'})
+        }
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            req.body.userId,
             {
                 $pull: { likes: req.params.id },
             },
-            { new: true }
-        )
-        res.status(200).send(res);
+            { new: true },
+        )  
+        res.status(200).json({
+            message: 'the like has been removed',
+            updatedPost,
+            updatedUser
+        });
     } catch (err) {
-        if (err) {
-            res.status(400).send(err)
-        }
+        res.status(400).send({ message: 'Error to unlike the post: ' + err});
     }
 }

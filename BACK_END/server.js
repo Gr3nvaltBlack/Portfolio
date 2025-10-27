@@ -1,15 +1,14 @@
 const express = require('express');
-const app = express(); // Create express app
+const connectDB = require('./config/db'); // Import database configuration
 const userRoutes = require('./routes/user.routes');
-const commentRoutes = require('./routes/comment.routes');
 const postRoutes = require('./routes/post.routes');
-const connectDB = require('./config/db');
+const commentRoutes = require('./routes/comment.routes');
 require('dotenv').config({path: './config/.env'});
 
-app.use(express.json()); // Middleware to parse JSON
-require('./config/db'); // Import database configuration
+const app = express(); // Create express app
 
 // Added routes
+app.use(express.json()); // Middleware to parse JSON
 app.use('/api/post', postRoutes); // Post routes
 app.use('/api/comment', commentRoutes); // Comment routes
 app.use('/api/users', userRoutes); // Use user routes
