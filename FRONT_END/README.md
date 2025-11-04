@@ -22,27 +22,29 @@ Once **React + TypeScript** is selected, Vite installs the configured folders an
 
 ### 🌳 Default tree structure
 <pre>
-FRONT_END/
-│  index.html
-│  package.json
-│  tsconfig.json
-│  vite.config.ts
-│  eslint.config.js
-│  .gitignore
-│  README.md
+📁 FRONT_END/
 │
-├─ public/
-│   vite.svg
+├── 📄 index.html
+├── 📄 package.json
+├── 📄 tsconfig.json
+├── 📄 vite.config.ts
+├── 📄 eslint.config.js
+├── 📄 .gitignore
+├── 📄 README.md
 │
-└─ src/
-   │  App.css
-   │  App.tsx
-   │  index.css
-   │  main.tsx
-   │  vite-env.d.ts
-   │
-   └─ assets/
-        react.svg
+├── 📁 public/
+│   └── 📄 vite.svg
+│
+└── 📁 src/
+    ├── 📄 App.css
+    ├── 📄 App.tsx
+    ├── 📄 index.css
+    ├── 📄 main.tsx
+    ├── 📄 vite-env.d.ts
+    │
+    └── 📁 assets/
+        └── 📄 react.svg
+
 </pre>
 
 
@@ -93,49 +95,64 @@ Contains images and static files (logos, icons, etc.).
 
 Creating new folders and files for the social network front: 
 <pre>
-src/
-│  App.tsx
-│  main.tsx
-│  index.css
-│  App.css
-│  vite-env.d.ts
+📁 src/
+│  ├── 📄 App.tsx
+│  ├── 📄 main.tsx
+│  ├── 📄 index.css
+│  ├── 📄 App.css
+│  └── 📄 vite-env.d.ts
 │
-├─ assets/
-│    logo.svg
+├─ 📁 assets/
+│   └── 📄 logo.svg
 │
-├─ components/
-│    Navbar.tsx
-│    PostCard.tsx
-│    Comment.tsx
-│    Loader.tsx
-│    (ProtectedRoute.tsx)   # Optional
+├─ 📁 components/
+│   ├── 📄 Navbar.tsx
+│   ├── 📄 PostCard.tsx
+│   ├── 📄 Comment.tsx
+│   ├── 📄 Loader.tsx
+│   ├── 📄 ProtectedRoute.tsx
+│   ├── 📄 RecipeCard.tsx
+│   └── 📄 LikeButton.tsx
 │
-├─ pages/
-│    Home.tsx
-│    Login.tsx
-│    Signup.tsx
-│    Profile.tsx
-│    NotFound.tsx
+├─ 📁 pages/
+│   ├── 📄 Home.tsx
+│   ├── 📄 Login.tsx
+│   ├── 📄 Register.tsx
+│   ├── 📄 Profile.tsx
+│   ├── 📄 NotFound.tsx
+│   ├── 📄 PostDetails.tsx
+│   ├── 📄 RecipeDetails.tsx
+│   ├── 📄 NewPost.tsx
+│   └── 📄 NewRecipe.tsx
 │
-├─ context/
-│    AuthContext.tsx
+├─ 📁 context/
+│   ├── 📄 AuthContext.tsx
+│   ├── 📄 PostContext.tsx         (optional)
+│   └── 📄 RecipeContext.tsx       (optional)
 │
-├─ services/
-│    api.ts
-│    authService.ts
-│    postService.ts
-│    userService.ts
+├─ 📁 services/
+│   ├── 📄 api.ts
+│   ├── 📄 authService.ts
+│   ├── 📄 postService.ts
+│   ├── 📄 userService.ts
+│   ├── 📄 commentService.ts
+│   └── 📄 recipeService.ts
 │
-├─ hooks/
-│    useAuth.ts
+├─ 📁 hooks/
+│   ├── 📄 useAuth.ts
+│   ├── 📄 usePosts.ts
+│   ├── 📄 useRecipes.ts
+│   └── 📄 useComments.ts
 │
-├─ types/
-│    user.ts
-│    post.ts
-│    comment.ts
+├─ 📁 types/
+│   ├── 📄 user.ts
+│   ├── 📄 post.ts
+│   ├── 📄 comment.ts
+│   └── 📄 recipe.ts
 │
-└─ router/
-     AppRouter.tsx
+└─ 📁 router/
+    └── 📄 AppRouter.tsx
+
 </pre>
 
 ## 💻 To-do list Frontend
@@ -145,10 +162,14 @@ I.
 Contains the main pages of the application (Home, Login, Signup, Profile, NotFound):
 
 - Login.tsx → Login page (email/password form).
-- Signup.tsx → Registration page.
+- Register.tsx → Registration page.
 - Home.tsx → The feed with the list of posts.
 - Profile.tsx → User profile page (personal information, posts).
 - NotFound.tsx → 404 page to manage non-existent routes.
+- PostDetails.tsx → see a post + its comments
+- RecipeDetails.tsx → see a recipe + its comments
+- NewPost.tsx → page to create a post
+- NewRecipe.tsx → page to create a recipe
 
 II.
 **components/**</br>
@@ -159,6 +180,8 @@ Contains reusable components (Navbar, PostCard, Loader, etc.). This avoids code 
 - Comment.tsx → To display a comment below a post.
 - Loader.tsx → Small loading component (useful during API fetch).
 - ProtectedRoute.tsx (optional) → Component to protect routes (redirects to login if not logged in).
+- RecipeCard.tsx → to display recipes
+- LikeButton.tsx → to manage likes/unlikes
 
 III.
 **context/**</br>
@@ -166,6 +189,8 @@ Centralizes the global state of the application with the React Context system:</
 Example: Store logged-in user information for use anywhere.
 
 - AuthContext.tsx → to store the logged-in user state.
+- PostContext.tsx → optional to manage posts globally
+- RecipeContext.tsx → if you want to separate recipes and posts
 
 IV.
 **services/**</br>
@@ -176,6 +201,8 @@ Example: authService.ts for login/signup, postService.ts for managing posts.
 - authService.ts → Manages everything related to authentication. Essential for managing sessions and tokens.
 - postService.ts → Manages feed posts. Used to manipulate the main content of your social network.
 - userService.ts → Manages users. To access profiles and edit information.
+- commentService.ts → For calls related to comments
+- recipeService.ts → For revenue-related calls
 
 V.
 **hooks/**</br>
@@ -183,6 +210,9 @@ Contains custom React hooks (reusable logic):</br>
 Example: useAuth to check if the user is logged in.
 
 - useAuth.ts → custom hook for easy access to AuthContext
+- usePosts.ts → custom hook to manage posts
+- useRecipes.ts → custom hook to manage recipes
+- useComments.ts → custom hook to manage comments
 
 VI
 **types/**</br>
@@ -191,6 +221,7 @@ Contains TypeScript interfaces (User, Post, Comment, etc.). This provides a stri
 - user.ts → Defines a user's properties. Used everywhere there is a user (profile, post author, auth).
 - post.ts → Defines the structure of posts. Used in the feed, on profiles, and in services.
 - comment.ts → Defines the structure of a comment. Used to type comments in posts.
+- recipe.ts → Define the structure of a recipe. Used to type comments in recipes.
 
 VII.
 **router/**</br>
@@ -221,6 +252,6 @@ This starts a local Vite server. By default, the Vite project will be accessible
 
 
 
-### Auteur
+### Author
 - Lentz Gonzalez (Gr3nvaltBlack)
 - Georges Menheim (georges479)
