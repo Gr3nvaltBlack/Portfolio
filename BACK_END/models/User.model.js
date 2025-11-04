@@ -11,21 +11,10 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true, trim: true, minLength: 8, maxLength: 1024 },
   profilePic: { type: String, default: ''},
   bio:      { type: String, default: '', maxLength: 150 },
-  createdAt:{ type: Date, default: Date.now }
-});
+},
+  { timestamps: true }
+);
 
-// Pre-save hook to hash password if modified
-/**userSchema.pre('save', async function(next){
-  if (!this.isModified('passwordHash')) return next();
-
-  try {
-    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
-});**/
 
 // Static method to find user by email
 userSchema.statics.findByEmail = function(email) {

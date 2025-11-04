@@ -120,18 +120,18 @@ Creating new folders and files for back logic:
 │   └── 📄 Comment.model.js
 │
 ├── 📁 controllers/
-│   ├── 📄 auth.controller.js
-│   ├── 📄 user.controller.js
-│   ├── 📄 post.controller.js
-|   ├── 📄 recipe.controller.js
-│   └── 📄 comment.controller.js
+│   ├── 📄 Auth.controller.js
+│   ├── 📄 User.controller.js
+│   ├── 📄 Post.controller.js
+|   ├── 📄 Recipe.controller.js
+│   └── 📄 Comment.controller.js
 │
 ├── 📁 routes/
-│   ├── 📄 auth.routes.js
-│   ├── 📄 user.routes.js
-│   ├── 📄 post.routes.js
-|   ├── 📄 recipe.routes.js
-│   └── 📄 comment.routes.js
+│   ├── 📄 Auth.routes.js
+│   ├── 📄 User.routes.js
+│   ├── 📄 Post.routes.js
+|   ├── 📄 Recipe.routes.js
+│   └── 📄 Comment.routes.js
 │
 ├── 📁 middlewares/
 │   ├── 📄 authMiddleware.js
@@ -163,35 +163,35 @@ II.
 Data Structure
 Defines Mongoose schemas for each entity (User, Post,...).
 
-- user.model.js → user schema (name, email, hashed password, role, etc.).
-- post.model.js → post schema (content, author, likes, comments).
-- recipe.model.js → recipe schema (title, ingredients, steps, photo, author, etc.).
-- comment.model.js → schema for comments linked to a post or recipe.
-- message.model.js → schema for private messaging (sender, receiver, content, date, etc.).
+- User.model.js → user schema (name, email, hashed password, role, etc.).
+- Post.model.js → post schema (content, author, likes, comments).
+- Recipe.model.js → recipe schema (title, ingredients, steps, photo, author, etc.).
+- Comment.model.js → schema for comments linked to a post or recipe.
+- Message.model.js → schema for private messaging (sender, receiver, content, date, etc.).
 
 III.
 **controllers/**</br>
 Processing Logic
 Receives requests, calls services, and returns HTTP responses.
 
-- auth.controller.js → Manages registration, login, and JWT token generation.
-- user.controller.js → Manages profile information and user modifications.
-- post.controller.js → CRUD for feed posts.
-- recipe.controller.js → CRUD for recipes.
-- comment.controller.js → Manages comments (adding, deleting, reading).
-- message.controller.js → Sends and receives private messages.
+- Auth.controller.js → Manages registration, login, and JWT token generation.
+- User.controller.js → Manages profile information and user modifications.
+- Post.controller.js → CRUD for feed posts.
+- Recipe.controller.js → CRUD for recipes.
+- Comment.controller.js → Manages comments (adding, deleting, reading).
+- Message.controller.js → Sends and receives private messages.
 
 IV.
 **routes/**</br>
 API Endpoints
 Manages URLs and binds each route to its controller.
 
-- auth.routes.js → public routes (login, signup).
-- user.routes.js → protected routes for profiles.
-- post.routes.js → CRUD routes for posts.
-- recipe.routes.js → CRUD routes for recipes.
-- comment.routes.js → CRUD routes for comments.
-- message.routes.js → routes for messaging.
+- Auth.routes.js → public routes (login, signup).
+- User.routes.js → protected routes for profiles.
+- Post.routes.js → CRUD routes for posts.
+- Recipe.routes.js → CRUD routes for recipes.
+- Comment.routes.js → CRUD routes for comments.
+- Message.routes.js → routes for messaging.
 
 V.
 **middlewares/**</br>

@@ -1,18 +1,7 @@
-const CommentModel = require('../models/comment.model');
-<<<<<<< HEAD
-const ObjectId = require('mongoose').Types.ObjectId;
-
-
-    /* -----Create a new comment for a post or recipe----- */
-exports.createComment = async (req, res) => {
-    const newComment = new CommentModel({
-        userId: req.body.userId,
-        text: req.body.text,
-    });
-=======
-const UserModel = require('../models/User');
-const PostModel = require('../models/post.model');
-const RecipeModel = require('../models/recipe');
+const CommentModel = require('../models/Comment.model');
+const UserModel = require('../models/User.model');
+const PostModel = require('../models/Post.model');
+const RecipeModel = require('../models/Recipe.model');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 
@@ -36,7 +25,6 @@ module.exports.createComment = async (req, res) => {
     if (postId && recipeId) {
         return res.status(400).send({ message: 'A comment cannot be linked to two entities.' })
     }
->>>>>>> 81c0977c278dcb7781401f3145c7eaf6c4d72121
     try {
         if (postId) {
             const newComment = new CommentModel({
@@ -74,13 +62,8 @@ module.exports.createComment = async (req, res) => {
 }
 
 
-<<<<<<< HEAD
-    /* -----Update a comment by ID for a post or recipe----- */
-exports.updateComment = async (req, res) => {
-=======
             /* =====Update a comment by ID for a post or recipe===== */
 module.exports.updateComment = async (req, res) => {
->>>>>>> 81c0977c278dcb7781401f3145c7eaf6c4d72121
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
@@ -118,13 +101,8 @@ module.exports.updateComment = async (req, res) => {
 }
 
 
-<<<<<<< HEAD
-    /* -----Delete a comment by ID for a post or recipe----- */
-exports.deleteComment = async (req, res) => {
-=======
             /* =====Delete a comment by ID for a post or recipe===== */
 module.exports.deleteComment = async (req, res) => {
->>>>>>> 81c0977c278dcb7781401f3145c7eaf6c4d72121
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });

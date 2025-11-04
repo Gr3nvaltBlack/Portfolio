@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const commentController = require('../controllers/comment.controller');
+const commentController = require('../controllers/Comment.controller');
 
             /* =====ROUTE FOR POST===== */
 // Route to Create a new comment for a post

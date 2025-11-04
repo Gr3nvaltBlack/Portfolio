@@ -1,4 +1,4 @@
-const PostModel = require('../models/post.model');
+const PostModel = require('../models/Post.model');
 const UserModel = require('../models/User.model');
 const ObjectId = require('mongoose').Types.ObejectId;
 
