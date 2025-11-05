@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User.model');
+const generateToken = require('../utils/generateToken');
 const jwt = require('jsonwebtoken');
 const { isJWT } = require('validator');
 
 // Register user
 exports.userRegister = async (req, res) => {
-        console.log('userRegister called with data:', req.body);
 
         // Check if user already exists
         const existingUser = await User.findOne({ email: req.body.email });
@@ -15,13 +15,15 @@ exports.userRegister = async (req, res) => {
                 });
         }
 
-        // Hash password and create user
-        const passwordHash = await bcrypt.hash(req.body.password, 10);
+        // Validate password length
         if (req.body.password.length < 8) {
                 return res.status(400).json({
                         message: 'Password must be at least 8 characters long.'
                 });
         }
+
+        // Hash password and create user
+        const passwordHash = await bcrypt.hash(req.body.password, 10);
         const user = new User({...req.body, passwordHash});
 
         await user.save();
@@ -33,8 +35,6 @@ exports.userRegister = async (req, res) => {
 // Login user
 exports.userLogin = async (req, res) => {
         try {
-                console.log('Login attempt with:', { email: req.body.email }); // Debug log
-
                 // Find user by email
                 const findUser = await User.findOne({ email: req.body.email });
                 console.log('User found:', findUser ? 'yes' : 'no'); // Debug log
@@ -47,8 +47,6 @@ exports.userLogin = async (req, res) => {
 
                 // Compare password
                 const validPassword = await bcrypt.compare(req.body.password, findUser.passwordHash);
-                console.log('Password valid:', validPassword); // Debug log
-
                 if (!validPassword) {
                         return res.status(400).json({
                                 message: 'Password is incorrect'
@@ -56,12 +54,7 @@ exports.userLogin = async (req, res) => {
                 }
 
                 // Generate JWT token
-                console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'defined' : 'undefined'); // Debug log
-                const token = jwt.sign(
-                        { id: findUser._id, email: findUser.email },
-                        process.env.JWT_SECRET,
-                        { expiresIn: process.env.EXPIRES_IN }
-                );
+                const token = generateToken(findUser);
 
                 return res.status(200).json({
                         message: 'Connected successfully',
@@ -162,4 +155,12 @@ exports.deleteUser = async (req, res) => {
                         message: 'Internal server error'
                 });
         }
+};
+
+// User logout
+exports.userLogout = async (req, res) => {
+        // Since JWTs are stateless, logout can be handled on the client side by deleting the token.
+        res.status(200).json({
+                message: 'User logged out successfully'
+        });
 };

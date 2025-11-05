@@ -27,31 +27,14 @@ exports.createRecipe = async (req, res) => {
     }
 };
 
-exports.getRecipeByName = async (req, res) => {
+exports.getAllRecipes = async (req, res) => {
 	try {
-		const { removeStopwords } = require('stopword')
-		const userQuery = req.query.q;
-		const lowerQuery = userQuery.toLowerCase();
-		const words = lowerQuery.split(" ");
-		const keywords = removeStopwords(words);
+		const recipes = await Recipe.find()
+		.populate('author', 'username email')// Populate author details
+		.sort({createdAt: -1});// Sort by creation date descending
 
-		const conditions = [];
-
-		for (const word of keywords) {
-			conditions.push({ title: { $regex: word, $options: "i" } });
-			conditions.push({ description: { $regex: word, $options: "i" } });
-			conditions.push({ ingredients: { $regex: word, $options: "i" } });
-		}
-
-		const listOfRecipes = await Recipe.find({ $or: conditions });
-
-		if (listOfRecipes.length === 0) {
-			return res.status(404).json({message: "No recipes found."});
-		}
-		return res.json(listOfRecipes);
-
+		return res.status(200).json(recipes);// Return all recipes
 	} catch (error) {
-		console.error(error);
 		res.status(500).json({message: 'Internal server error', error});
 	}
 };
@@ -67,12 +50,18 @@ exports.updateRecipe = async (req, res) => {
 			return res.status(403).send('Access denied')
 		}
 
+		// Update fields if they are provided in the request body
 		const fields = ["title", "description", "ingredients", "steps", "image"];
 		for (const field of fields) {
 			if (req.body[field]) {
 				recipe[field] = req.body[field];
 			}
 		}
+
+		if (req.body.newIngredient) {
+			recipe.ingredients.push(req.body.newIngredient);
+		}
+
 		await recipe.save();
 		return res.status(200).json({
 			message: 'Recipe update performed successfully',
@@ -82,6 +71,16 @@ exports.updateRecipe = async (req, res) => {
 	} catch (error) {
                 console.error(error);
                 res.status(500).json({message: 'Internal server error', error});
+	}
+};
+
+exports.getUserRecipes = async (req, res) => {
+	try{
+		const recipe = await Recipe.find({ author: req.user.id })
+		.sort({createdAt: -1});
+		return res.status(200).json(recipe);
+	} catch (error) {
+		res.status(500).json({message: 'Internal server error', error});
 	}
 };
 

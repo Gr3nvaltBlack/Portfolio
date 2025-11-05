@@ -2,7 +2,7 @@ const Message = require('../models/Message.model');
 const User = require('../models/User.model');
 
 
-exports.sendMessages = async (req, res) => {
+exports.sendMessage = async (req, res) => {
 	try {
 		const sender = req.user.id;
 		const receiver = req.body.receiver;

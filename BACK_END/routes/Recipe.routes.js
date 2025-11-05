@@ -5,7 +5,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 // Routes
 router.post('/create', authMiddleware, recipeController.createRecipe);
-router.get('/search', recipeController.getRecipeByName);
+router.get('/all', recipeController.getAllRecipes);
+router.get('/own', authMiddleware, recipeController.getUserRecipes);
 router.put('/update/:id', authMiddleware, recipeController.updateRecipe);
 router.delete('/delete/:id', authMiddleware, recipeController.deleteRecipe);
 
