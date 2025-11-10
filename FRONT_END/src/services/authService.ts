@@ -58,7 +58,7 @@ export const LogOutUser = async (): Promise<UserResponse | null> => {
         );
         return data
     } catch (error) {
-        console.error("Erreur lors de la déconnexion:", error);
+        console.error("Error during disconnection:", error);
         return null;
     }
 };
