@@ -5,7 +5,7 @@ const User = require('../models/User.model');
 exports.sendMessage = async (req, res) => {
 	try {
 		const sender = req.user.id;
-		const receiver = req.body.receiver;
+		const receiver = req.params.receiverId;
 		const content = req.body.content;
 		const existinReceiver = await User.findById(receiver);
 
@@ -13,14 +13,14 @@ exports.sendMessage = async (req, res) => {
 			return res.status(404).json({message: 'User not found'});
 		}
 
-		if (!content) {
+		if (!content || content.trim() === "") {
 			return res.status(204).end();
 		}
 
 		const message = new Message({
-				sender: req.user.id,
-				receiver: req.body.receiver,
-				content: req.body.content
+				sender,
+				receiver,
+				content
 			});
 
 		await message.save();

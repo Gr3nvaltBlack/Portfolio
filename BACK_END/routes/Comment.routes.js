@@ -1,21 +1,18 @@
 const router = require('express').Router();
 const commentController = require('../controllers/Comment.controller');
+const authMiddleware = require('../middleware/authMiddleware');
 
-            /* =====ROUTE FOR POST===== */
-// Route to Create a new comment for a post
+// Apply authentication middleware to all routes in this router
+router.use(authMiddleware);
+
+// Route to create, update and delete a comment for a post
 router.post('/post/:postId/comments', commentController.createComment);
-// Route to Update a comment for a post
-router.patch('/post/:postId/comments/:commentId', commentController.updateComment);
-// Route to Delete a comment for a post
-router.delete('/post/:postId/comments/:commentId', commentController.deleteComment,);
+router.put('/post/comments/:id', commentController.updateComment);
+router.delete('/post/comments/:id', commentController.deleteComment,);
 
-            /* =====ROUTE FOR RECIPE===== */
-// Route to Create a new comment for a recipe
+// Route to create, update and delete a comment for a recipe
 router.post('/recipe/:recipeId/comments', commentController.createComment);
-// Route to Update a comment for a recipe
-router.patch('/recipe/:recipeId/comments/:commentId', commentController.updateComment);
-// Route to Delete a comment for a recipe
-router.delete('/recipe/:recipeId/comments/:commentId', commentController.deleteComment);
+router.put('/recipe/comments/:id', commentController.updateComment);
+router.delete('/recipe/comments/:id', commentController.deleteComment);
 
-// Export the router
 module.exports = router;

@@ -1,5 +1,9 @@
 const router = require('express').Router();
 const postController = require('../controllers/Post.controller');
+const authMiddleware = require('../middleware/authMiddleware');
+
+// Apply authentication middleware to all routes
+router.use(authMiddleware);
 
 // Route to Create a new post
 router.post('/', postController.createPost);
@@ -12,10 +16,8 @@ router.put('/:id', postController.updatePost);
 // Route to Delete a post
 router.delete('/:id', postController.deletePost);
 
-// Route to like a post
-router.patch('/like-post/:id', postController.likePost);
-// Route to unlike a post
-router.patch('/unlike-post/:id', postController.unlikePost);
+router.patch('/:id/like', postController.likePost); // Like a post
+router.patch('/:id/unlike', postController.unlikePost); // Unlike a post
 
 // Export the router
 module.exports = router;

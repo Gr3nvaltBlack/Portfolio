@@ -164,3 +164,58 @@ exports.userLogout = async (req, res) => {
                 message: 'User logged out successfully'
         });
 };
+
+
+exports.followUser = async (req, res) => {
+        try {
+                const userId = req.user.id;
+                const targetId = req.params.id;
+
+                if (userId === targetId) {
+                return res.status(400).json({ message: "You cannot follow yourself" });
+                }
+
+                        const target = await User.findById(targetId);
+                        if (!target) {
+                        return res.status(404).json({ message: "Target user not found" });
+                        }
+
+                // Add target to my following
+                await User.findByIdAndUpdate(userId, {
+                $addToSet: { following: targetId }
+                });
+
+                // Add me to target's followers
+                await User.findByIdAndUpdate(targetId, {
+                $addToSet: { followers: userId }
+                });
+
+                res.status(200).json({ message: "User followed" });
+        } catch (err) {
+                res.status(500).json({ message: "Error: " + err });
+        }
+};
+
+
+exports.unfollowUser = async (req, res) => {
+        try {
+                const userId = req.user.id;
+                const targetId = req.params.id;
+
+                if (userId === targetId) {
+                return res.status(400).json({ message: "You cannot unfollow yourself" });
+                }
+
+                await User.findByIdAndUpdate(userId, {
+                $pull: { following: targetId }
+                });
+
+                await User.findByIdAndUpdate(targetId, {
+                $pull: { followers: userId }
+                });
+
+                res.status(200).json({ message: "User unfollowed" });
+        } catch (err) {
+                res.status(500).json({ message: "Error: " + err });
+        }
+};

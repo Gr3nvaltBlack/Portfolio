@@ -1,37 +1,43 @@
 const PostModel = require('../models/Post.model');
 const UserModel = require('../models/User.model');
-const ObjectId = require('mongoose').Types.ObejectId;
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
-            /* =====Create a new post for a user===== */
-module.exports.createPost = (req, res) => {
-    const newPost = new PostModel({
-        userId: req.body.userId,
-        title: req.body.title,
-        content: req.body.content,
-        media: req.body.media,
-        likers: [],
-        comments: [],
-    });
-    newPost.save()
-        .then((post) => res.status(201).json(post))
-        .catch((error) =>res.status(400).send({ message: 'Error creating post: ' + error}));
-}
+// Create a new post
+exports.createPost = async (req, res) => {
+    try {
+        const newPost = new PostModel({
+            userId: req.user.id,
+            title: req.body.title,
+            content: req.body.content,
+            media: req.body.media,
+            likers: [],
+            comments: []
+        });
+        await newPost.save()
+        res.status(201).json(newPost);
+        } catch (error) {
+            res.status(400).json({ message: 'Error creating post: ', error});
+    }
+};
 
 
-            /* =====Recover all posts===== */
-module.exports.getAllPosts = async (req, res) => {
+// Retrieve all posts
+exports.getAllPosts = async (req, res) => {
     try {
         const posts = await PostModel.find()
+            .populate('userId', 'username avatar')
+            .populate('comments')
+            .sort({ createdAt: -1 });
             res.status(200).json(posts)
     } catch (err) {
         res.status(500).send({ message: 'Failed to retrieve posts: ' + err });
     }
-}
+};
 
 
-            /* =====Recover a single post by ID===== */
-module.exports.getPostById = async (req, res) => {
+ // Retrieve a single post by ID
+exports.getPostById = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
@@ -40,6 +46,9 @@ module.exports.getPostById = async (req, res) => {
     try {
         // If the post does not exist
         const post = await PostModel.findById(req.params.id)
+            .populate('userId', 'username avatar')
+            .populate('comments');
+
         if (!post) {
             return res.status(404).send({ message: 'Post not found' })
         }
@@ -47,18 +56,17 @@ module.exports.getPostById = async (req, res) => {
         } catch (err) {
             res.status(500).send({ message: 'Failed to retrieve this post: ' + err });
         }   
-}
+};
 
-
-            /* =====Update a post by ID===== */
-module.exports.updatePost = async (req, res) => {
+ // Update a post by ID
+exports.updatePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
 
     // What we want to update
-    const updatedPost = {
+    const wantToUp = {
         title: req.body.title,
         content: req.body.content,
     }
@@ -71,28 +79,24 @@ module.exports.updatePost = async (req, res) => {
             return res.status(404).send({ message: 'Post not found' })
         }
         // Check if the user is the owner of the post to update
-        if (post.userId !== req.body.userId) {
+        if (post.userId.toString() !== req.user.id) {
             return res.status(403).send({ message: 'You are not authorized to update this post' })
         }
 
         const updatedPost = await PostModel.findByIdAndUpdate(
             req.params.id,
-            {$set: updatedPost},
-            {
-                new: true,
-                setDefaultsOnInsert: true,
-                runValidators: true
-            },
-        )
+            {$set: wantToUp},
+            { new: true, setDefaultsOnInsert: true, runValidators: true }
+        );
             res.status(200).json(updatedPost);
     } catch (err) {
         res.status(400).send({ message: 'Error to update the post: ' + err });
     }
-}
+};
 
 
-            /* =====Delete a post by ID===== */
-module.exports.deletePost = async (req, res) => {
+// Delete a post by ID
+exports.deletePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
@@ -105,26 +109,28 @@ module.exports.deletePost = async (req, res) => {
         if (!post) {
             return res.status(404).send({ message: 'Post not found'})
         }
+
         // Check if the user is the owner of the post to delete
-        if (post.userId !== req.body.userId) {
+        if (post.userId.toString() !== req.user.id) {
             return res.status(403).send({ message: 'You cannot delete this post.' })
         }
-
-        const postToDelete = await PostModel.findByIdAndDelete(req.params.id);
-        res.status(200).send({ message: 'Post deleted successfully', deleted: postToDelete });
-    } catch (error) {
+        
+        await PostModel.findByIdAndDelete(req.params.id);
+        res.status(200).send({ message: 'Post deleted successfully' });
+    } catch (err) {
         res.status(400).send({ message: 'Error deleted post' + err });
     }
-}
+};
 
 
-            /* =====Like a post===== */
-module.exports.likePost = async (req, res) => {
+// Like a post
+exports.likePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     try {
+        const userId = req.user.id;
         // Check if the post exists
         const post = await PostModel.findById(req.params.id);
         if (!post) {
@@ -133,23 +139,27 @@ module.exports.likePost = async (req, res) => {
         const updatedPost = await PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $addToSet: { likers: req.body.userId },
+                $addToSet: { likers: userId },
             },
             { new: true },
         );
 
         // Check if the user exists
-        const user = await UserModel.findById(req.body.userId);
+        const user = await UserModel.findById(req.user.id);
         if (!user) {
             return res.status(404).send({ message: 'the user does not exist'})
         }
+
+        if (post.likers.includes(userId)) {
+            return res.status(400).send({ message: 'You have already liked this post' });
+        }
+
         const updatedUser = await UserModel.findByIdAndUpdate(
-            req.body.userId,
-            {
-                $addToSet: { likes: req.params.id },
-            },
-            { new: true },
-        )
+            userId,
+            { $addToSet: { likes: req.params.id } },
+            { new: true }
+        );
+
         res.status(200).json({
             message: 'Post likes succesfully',
             updatedPost,
@@ -161,13 +171,14 @@ module.exports.likePost = async (req, res) => {
 }
 
 
-            /* =====Unlike a post===== */
-module.exports.unlikePost = async (req, res) => {
+// Unlike a post
+exports.unlikePost = async (req, res) => {
     // Check if the ID is valid
     if (!ObjectId.isValid(req.params.id)) {
         return res.status(400).send({ message: `The ID ${req.params.id} is not valid` });
     }
     try {
+        const userId = req.user.id;
         // Check if the post exists
         const post = await PostModel.findById(req.params.id);
         if (!post) {
@@ -176,7 +187,7 @@ module.exports.unlikePost = async (req, res) => {
         const updatedPost = await PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $pull: { likers: req.body.userId},
+                $pull: { likers: userId},
             },
             { new: true },
         );
@@ -187,14 +198,14 @@ module.exports.unlikePost = async (req, res) => {
             return res.status(404).send({ message: 'the user does not exist'})
         }
         const updatedUser = await UserModel.findByIdAndUpdate(
-            req.body.userId,
+            userId,
             {
                 $pull: { likes: req.params.id },
             },
             { new: true },
         )  
         res.status(200).json({
-            message: 'the like has been removed',
+            message: 'The like has been removed',
             updatedPost,
             updatedUser
         });

@@ -6,9 +6,18 @@ const postRoutes = require('./routes/Post.routes');
 const recipeRoutes = require('./routes/Recipe.routes');
 const commentRoutes = require('./routes/Comment.routes');
 const messageRoutes = require('./routes/Message.route');
+const cors = require('cors');
 
 
 const app = express(); // Create express app
+
+// Middleware
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+})); // Enable CORS
 
 // Added routes
 app.use(express.json()); // Middleware to parse JSON

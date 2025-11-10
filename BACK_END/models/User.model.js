@@ -11,8 +11,10 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true, trim: true, minLength: 8, maxLength: 1024 },
   profilePic: { type: String, default: ''},
   bio:      { type: String, default: '', maxLength: 150 },
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 },
-  { timestamps: true }
+{ timestamps: true }
 );
 
 
