@@ -3,7 +3,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
-
+import NewPost from "../pages/NewPost";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const AppRouter = () => {
@@ -12,6 +12,7 @@ const AppRouter = () => {
       <Navbar />
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/new-post" element={<NewPost />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
