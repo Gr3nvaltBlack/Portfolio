@@ -24,17 +24,16 @@ const Navbar = () => {
                         </div>
                     </NavLink>
                 </div>
+                <div className='nav-right'>
                 {uid ? (
-                    <ul>
-                        <li className='welcome'>
-                            <NavLink end to={"/profile"}>
-                                <h1>
-                                    Welcome {userdata.pseudo}!
-                                </h1>
-                            </NavLink>
-                        </li>
+                    <>
+                        <NavLink end to={"/profile"}>
+                            <h3>
+                                Welcome {userdata.pseudo||'User'}!
+                            </h3>
+                        </NavLink>
                         <Logout />
-                    </ul>
+                    </>
                 ) : (
                     <ul>
                         <li>
@@ -44,6 +43,7 @@ const Navbar = () => {
                         </li>
                     </ul>
                 )}
+                </div>
             </div>
         </nav>
         </>
