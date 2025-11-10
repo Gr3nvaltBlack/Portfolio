@@ -19,7 +19,7 @@ const Login = () => {
       const resp = await LoginUser(email, password);
 
       if (!resp) {
-        setErrorMsg('Aucune connexion au serveur');
+        setErrorMsg('No connection to server');
         return;
       }
       if ("error" in resp) {
