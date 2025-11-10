@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #fffaf2, #f3e0c5);
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0 8px 25px rgba(90, 56, 37, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    margin: auto;
+    margin-top: 289px;
+    color: #5a3825;
+}
+
+.container .title {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 600;
+    width: 100%;
+}
+
+.container .input-box {
+    position: relative;
+    width: 100%;
+    height: 55px;
+    margin: 30px 0;
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    padding: 20px 45px 20px 20px;
+    border: 3px solid #e48f45;
+    border-radius: 35px;
+    outline: none;
+    background: #fffaf2;
+    font-size: 18px;
+    color: #5a3825;
+}
+
+.input-box input::placeholder {
+    color: #bda98b;
+}
+.input-box input:focus {
+    border-color: #b8c480;
+    box-shadow: 0 0 6px rgba(232, 143, 69, 0.5);
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e48f45;
+    font-size: 20px;
+}
+
+.container .create-account {
+    display: flex;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: #7b5a45;
+    margin-bottom: 10px;
+}
+
+
+.create-account a {
+    color: #e48f45;
+    text-decoration: none;
+    &:hover {
+        color: darkgoldenrod;
+        text-decoration: underline;
+    }
+}
+
+.container .btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(90deg, #e48f45, #b7651a);
+    color: #fffaf2;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 17px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(180, 94, 34, 0.3);
+    &:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 12px rgba(228, 143, 69, 0.6);
+    }
+}
