@@ -15,66 +15,22 @@ const Login = () => {
     e.preventDefault();
     setErrorMsg('');
 
-    console.log('Début handleLogin avec:', { email, password });
     try {
       const resp = await LoginUser(email, password);
-      console.log('Réponse LoginUser:', resp);
+
       if (!resp) {
-        console.log('Aucune réponse reçue');
         setErrorMsg('Aucune connexion au serveur');
         return;
       }
-
-      const data = resp.data ?? resp;
-      const status = resp.status ?? data?.status;
-      const message = (data?.message ?? data?.error ?? '').toString().toLowerCase();
-
-      // Email introuvable / utilisateur inexistant
-      if (
-        status === 404 ||
-        message.includes('email')
-      ) {
-        setErrorMsg("Email n'existe pas");
+      if ("error" in resp) {
+        setErrorMsg(resp.error);
         return;
       }
-
-      // Mot de passe incorrect
-      if (
-        status === 401 ||
-        message.includes('password') ||
-        message.includes('mot de passe') ||
-        data?.error === 'INVALID_PASSWORD'
-      ) {
-        setErrorMsg('Mot de passe incorrect');
-        return;
+      window.location.href = "/";
+    } catch (err) {
+        setErrorMsg("An error has occurred. Check your email or password.");
       }
-
-      // Succès : token ou statut 200
-      if (status === 200 || data?.token || resp.token || resp.success) {
-        window.location.href = '/';
-        return;
-      }
-
-      // Cas par défaut (réponse inattendue)
-      setErrorMsg('Erreur lors de la connexion');
-    } catch (err: any) {
-      // Pas de réponse du serveur (erreur réseau)
-      if (!err?.response) {
-        setErrorMsg('Aucune connexion au serveur');
-        return;
-      }
-
-      const msg = (err.response?.data?.message ?? err.message ?? '').toString().toLowerCase();
-      if (msg.includes('password') || msg.includes('mot de passe')) {
-        setErrorMsg('Mot de passe incorrect');
-      } else if (msg.includes('email') || msg.includes('user') || msg.includes('utilisateur')) {
-        setErrorMsg("Email n'existe pas");
-      } else {
-        setErrorMsg('Erreur lors de la connexion');
-      }
-    }
   };
-// ...existing code...
 
   return (
     <>
