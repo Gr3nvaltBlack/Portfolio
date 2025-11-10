@@ -5,7 +5,7 @@ import { CiStar } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 import { TbMessageCircle } from "react-icons/tb";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { MdOutlineAddBox } from "react-icons/md";
 
 type MyComponentProps = {
     className?: string;
@@ -45,10 +45,10 @@ const LeftNav: React.FC<MyComponentProps> = ({ className }) => {
                         </button>
                     </NavLink>
 
-                    <NavLink to={"/notifications"} className="left-nav-link">
+                    <NavLink to={"/new-post"} className="left-nav-link">
                         <button>
-                            <IoNotificationsOutline />
-                            <span>Notifications</span>
+                            <MdOutlineAddBox />
+                            <span>Publications</span>
                         </button>
                     </NavLink>
                     
