@@ -1,0 +1,250 @@
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #fff7e8, #f4ede6);
+}
+
+.profile-container {
+    display: flex;
+    background-color: #e8d6c1;
+    border-radius: 10px;
+    border: 2px solid #d9e0c0;
+    overflow: hidden;
+    flex-direction: column;
+    margin: 20px;
+    margin-top: 135px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px #c79b63;
+    z-index: 1;
+}
+
+.profile-container .banner {
+    width: 100%;
+    height: 220px;
+    background-color: rgb(206, 88, 9);
+}
+
+.profile-container .default-image {
+    position: relative;
+}
+
+.profile-container .default-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-top: -75px;
+    margin-left: 20px;
+    border: 3px solid white;
+    background-color: gray;
+    z-index: 2;
+}
+
+.profile-container .profile-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+    gap: 2rem;
+    position: relative;
+}
+
+.profile-info .profile-info-left {
+    color: #e48f45;
+    width: 500px;
+    /* background-color: blue; */
+}
+.profile-info-left h3 {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.profile-info-left .profile-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+.profile-nav .user-recipe p, .user-followers p, .user-following p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-nav .user-recipe h4, .user-followers h4, .user-following h4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: -10px 0;
+    margin-bottom: 90px;
+    padding: 0;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.profile-nav .user-followers, .user-following {
+    transition: 0.3s;
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.02);
+    }
+}
+
+.pop-user-container {
+    background: #f3f3f3;
+    position: absolute;
+    left: 36vw;
+    top: 0;
+    width: 50vw;
+    height: 250px;
+    border-radius: 10px;
+    border: 1px solid;
+    padding: 10px;
+    overflow-y: auto;
+}
+.pop-user-container span {
+    cursor: pointer;
+}
+
+.profile-info-left .profile-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: -40px;
+    margin-bottom: 5px;
+}
+
+.profile-info-left .follow-button {
+    background-color: #c19977;
+    color: #6b3e2e;
+    border: none;
+    border-radius: 10px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    &:hover {
+        background-color: #8b6f5c;
+    }
+}
+.profile-info-left .message-button {
+    background-color: #fdfbf5;
+    color: #6b3e2e;
+    border: none;
+    border-radius: 10px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    &:hover {
+        background-color: #d7d2cb;
+        color: #c17c56;
+    }
+}
+
+
+.profile-container .profile-info-right {
+    color: #e48f45;
+    width: 900px;
+    max-width: 900px;
+    margin-bottom: 100px;
+    /* background-color: rgb(142, 191, 192); */
+    border-radius: 10px;
+    padding: 12px;
+    /* overflow: scroll; */
+    text-overflow: ellipsis;
+}
+
+.profile-info-right .Master {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.Master textarea {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 7px;
+    width: 50%;
+    min-height: 100px;
+    color: #000;
+}
+
+.Master button {
+    height: 54px;
+    width: 56px;
+}
+
+.user-post-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    background-color: #e8d6c1;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border-radius: 20px;
+    border: 2px solid #d9e0c0;
+    box-shadow: 0 0 5px #c79b63;
+    margin: 0 auto;
+    margin: 20px;
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+.user-post-container .post-content, .recipe-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    gap: 1rem;
+    background-color: #d9534f;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: 1.5s;
+}
+
+.user-post-container .post-content:hover, .recipe-content:hover {
+    transform: scale(1.05);
+    background-color: #c17c56;
+    box-shadow: 0 0 5px #e8d6c1;
+}
+
+.display-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 700px;
+    color: gray;
+    font-size: 24px;
+    background-color: #e8d6c1;
+    border-radius: 10px;
+    border: 2px solid #d9e0c0;
+    box-shadow: 0 0 5px #c79b63;
+    margin: 20px;
+    z-index: 1;
+}
+
+.display-content h2 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    background: linear-gradient(
+        270deg,
+        #c4855f,
+        #C67C4E,
+        #7B4B3A,
+        #4E342E
+    );
+    background-size: 800% 800%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 10s ease infinite;
+}
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100%;
+    }
+    100% {
+        background-position: -100%;
+    }
+}
