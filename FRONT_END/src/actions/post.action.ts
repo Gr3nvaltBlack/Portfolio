@@ -9,6 +9,9 @@ export const UNLIKE_POST = "UNLIKE_POST"
 // Comment action
 export const ADD_COMMENT = "ADD_COMMENT"
 
+// Error 
+export const GET_POST_ERRORS = "GET_POST_ERRORS"
+
 export const getPosts = (num: number) => {
     return (dispatch: any) => {
         return axios.get(`${import.meta.env.VITE_API_URL}api/post`)
@@ -26,6 +29,9 @@ export const addPost = (data: FormData) => {
     return (dispatch: any) => {
         return axios.post(`${import.meta.env.VITE_API_URL}api/post/`, data)
         .then((res) => {
+            if (res.data.error) {
+                dispatch({ type: GET_POST_ERRORS, payload: res.data.error })
+            }
             dispatch({type: ADD_POST, payload: res.data})
         })
         .catch((error) => {
