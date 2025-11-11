@@ -1,11 +1,18 @@
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 
 const generateToken = (user) => {
-    return jwt.sign(
-        { id: user._id, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.EXPIRES_IN }
-    );
+    const jti = uuidv4();
+    const payload = { 
+        userId: user._id,
+        email: user.email,
+        jti 
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.EXPIRES_IN,
+    });
+    return { token, jti };
 };
 
 module.exports = generateToken;

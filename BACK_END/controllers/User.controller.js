@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User.model');
 const generateToken = require('../utils/generateToken');
-const jwt = require('jsonwebtoken');
-const { isJWT } = require('validator');
+const Token = require("../models/Token.model");
+
 
 // Register user
 exports.userRegister = async (req, res) => {
@@ -54,7 +54,9 @@ exports.userLogin = async (req, res) => {
                 }
 
                 // Generate JWT token
-                const token = generateToken(findUser);
+                const { token, jti } = generateToken({userId: findUser._id});
+
+                await Token.create({ userId: findUser._id, jti }); // Store the jti in the database
 
                 return res.status(200).json({
                         message: 'Connected successfully',
@@ -159,10 +161,18 @@ exports.deleteUser = async (req, res) => {
 
 // User logout
 exports.userLogout = async (req, res) => {
-        // Since JWTs are stateless, logout can be handled on the client side by deleting the token.
-        res.status(200).json({
-                message: 'User logged out successfully'
-        });
+        try {
+                const jti = req.user.jti;
+
+                await Token.updateOne(
+                        { jti },
+                        { isRevoked: true }
+                );
+                return res.status(200).json({ message: "Logged out successfully" });
+        } catch (error) {
+                console.error(error);
+                return res.status(500).json({ message: "Internal server error" });
+        }
 };
 
 
