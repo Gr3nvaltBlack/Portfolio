@@ -6,6 +6,8 @@ import type rootReducer from "../redux/reducers/rootReducer";
 import { isEmpty } from "../hooks/verifData";
 import PostCard from "./PostCard";
 
+import "./thread.css"
+
 
 
 const Thread = () => {
@@ -35,11 +37,9 @@ const Thread = () => {
     return (
         <>
             <div className="thread-container">
-                <ul>
-                    {!isEmpty(posts[0]) && posts.map((post: any) => {
-                        return <PostCard post={post}/>
-                    }) }
-                </ul>
+                {!isEmpty(posts[0]) && posts.map((post: any, i) => {
+                    return <PostCard post={post} key={i} />
+                }) }
             </div>
         </>
     )

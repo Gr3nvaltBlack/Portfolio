@@ -19,12 +19,12 @@ const FollowHandle: React.FC<FollowHandleProps> = ({ idToFollow, typeTofollow })
     const dispatch = useDispatch<AppDispatch>();
 
     const handleFollow = () => {
-        dispatch(followUser(userData._id, idToFollow));
+        dispatch(followUser(idToFollow));
         setIsFollowed(true);
     };
 
     const handleUnFollow = () => {
-        dispatch(unfollowUser(userData._id, idToFollow));
+        dispatch(unfollowUser(idToFollow));
         setIsFollowed(false);
     };
 

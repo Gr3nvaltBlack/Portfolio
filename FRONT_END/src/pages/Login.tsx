@@ -2,6 +2,7 @@ import "./auth.css";
 import { useState } from "react";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import Cookies from "js-cookie"
 import { LoginUser } from "../services/authService";
 import ShinyText from "../components/ShinyText/ShinyText";
 
@@ -10,14 +11,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   const handleLogin = async (e: any) => {
     e.preventDefault();
     setErrorMsg('');
 
     try {
       const resp = await LoginUser(email, password);
-
       if (!resp) {
         setErrorMsg('No connection to server');
         return;
@@ -26,6 +25,13 @@ const Login = () => {
         setErrorMsg(resp.error);
         return;
       }
+      if (!resp['token']) {
+        setErrorMsg("Error connection")
+      }
+
+      console.log("Token", resp['token'])
+      Cookies.set("jwt", resp['token'] as string)
+
       window.location.href = "/";
     } catch (err) {
         setErrorMsg("An error has occurred. Check your email or password.");

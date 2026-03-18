@@ -1,72 +1,68 @@
-import './navbar.css'
+import "./navbar.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import rootReducer from '../redux/reducers/rootReducer';
+import rootReducer from "../redux/reducers/rootReducer";
 import { uploadPicture } from "../actions/user.actions";
 import type { AppDispatch } from "../redux/store";
 import { CiCamera } from "react-icons/ci";
 
 type MyComponentProps = {
-    className?: string;
+  className?: string;
 };
 
 const UploadImg: React.FC<MyComponentProps> = ({ className }) => {
-    const [file, setFile] = useState<File | null>(null);
-    const dispatch = useDispatch<AppDispatch>();
-    const userData = useSelector((state: ReturnType<typeof rootReducer>) => state.userReducer);
-    const [isUploaded, setIsUploaded] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const userData = useSelector(
+    (state: ReturnType<typeof rootReducer>) => state.userReducer
+  );
+  const [isUploaded, setIsUploaded] = useState(false);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setFile(e.target.files[0]);
-        }
-    };
+      if (selectedFile.size > 2 * 1024 * 1024) {
+        // 2 Mo
+        alert("Fichier trop volumineux");
+        return;
+      }
 
-    const handlePicture = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+      setFile(selectedFile);
 
-        if (!file) return; // Checks that file is not null
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        console.log(base64String);
 
-        const data = new FormData();
-        data.append("name", userData.pseudo);
-        data.append("userId", userData.user._id);
-        data.append("file", file);
-
-        dispatch(uploadPicture(data, userData._id));
-        setIsUploaded(true);
-        setFile(null);
-        setTimeout(() => setIsUploaded(false), 1000);
+        dispatch(uploadPicture(base64String)).then(() => {
+          setIsUploaded(true);
+          setFile(null);
+          setTimeout(() => setIsUploaded(false), 1000);
+        });
+      };
+      reader.readAsDataURL(selectedFile);
     }
+  };
 
-    return (
-        <>
-
-                <form action="" onSubmit={handlePicture} className="upload-pic">
-                    {!file && !isUploaded && (
-                        <>
-                            <label htmlFor="file" className='Change-img'>
-                                <CiCamera />
-                            </label>
-                            <input
-                                type="file"
-                                id="file"
-                                name="file"
-                                onChange={(handleFileChange)}
-                                className='Mask'
-                            />
-                        </>
-                    )}
-                    {file && !isUploaded && (
-                        <input type="submit" value={'\u2714'} className='Submit-pic'/>
-                    )}
-                    {isUploaded && (
-                        <div className='Upload-done'>✔</div>
-                    )}
-                </form>
-  
-        </>
-    )
+  return (
+    <>
+      {!isUploaded && (
+        <label htmlFor="file" className="Change-img">
+          <CiCamera />
+          <input
+            type="file"
+            id="file"
+            name="file"
+            onChange={handleFileChange}
+            className="Mask"
+            style={{ display: "none" }}
+          />
+        </label>
+      )}
+      {isUploaded && <div className="Upload-done">✔</div>}
+    </>
+  );
 };
 
 export default UploadImg;

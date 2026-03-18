@@ -1,7 +1,5 @@
 import './navbar.css'
-import { useContext } from 'react';
 import { NavLink } from "react-router-dom";
-import { UidContext } from '../context/AuthContext';
 import { GiExitDoor } from "react-icons/gi";
 import Logout from '../pages/Logout';
 import { useSelector } from 'react-redux';
@@ -9,8 +7,7 @@ import rootReducer from '../redux/reducers/rootReducer';
 
 
 const Navbar = () => {
-    const uid = useContext(UidContext);
-    const userdata = useSelector((state: ReturnType<typeof rootReducer>) => state.userReducer);
+    const user = useSelector((state: ReturnType<typeof rootReducer>) => state.userReducer);
 
     return (
         <>
@@ -25,11 +22,11 @@ const Navbar = () => {
                     </NavLink>
                 </div>
                 <div className='nav-right'>
-                {uid ? (
+                {user && user._id ? (
                     <>
                         <NavLink end to={"/profile"}>
                             <h3>
-                                Welcome {userdata.pseudo||'User'}!
+                                Welcome {user.username||'User'}!
                             </h3>
                         </NavLink>
                         <Logout />

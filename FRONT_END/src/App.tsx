@@ -1,42 +1,43 @@
-import AppRouter from './router/AppRouter.tsx'
+import AppRouter, { AppRouterNotConnected } from './router/AppRouter.tsx'
 import { UidContext } from './context/AuthContext.tsx'
 import { TokenUser } from './services/authService.ts';
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react'
+import Cookies from "js-cookie"
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './actions/user.actions.ts';
-import type { AppDispatch } from './redux/store.ts';
-
-
+import type { AppDispatch, RootState } from './redux/store.ts';
 
 function App() {
-  const [uid, setUid] = useState(null);
   const dispatch = useDispatch<AppDispatch>();
 
+  const user = useSelector((state: RootState) => state.userReducer);
+
   useEffect(() => {
-    const reqToken = async() => {
+    const fetchUser = async () => {
       try {
-        const VerifToken = await TokenUser()
-        if(!VerifToken) {
-          return
+        if (!Cookies.get('jwt')) return;
+
+        const verifToken = await TokenUser();
+        if (!verifToken || !verifToken.id) {
+          return;
         }
-        setUid(VerifToken)
+        dispatch(getUser(verifToken.id));
       } catch (error) {
         console.log(error);
       }
-    }
-    reqToken();
-
-    if (uid) {
-      dispatch(getUser(uid));
-    }
-    
-  }, [uid, dispatch]);
+    };
+    fetchUser();
+  }, [dispatch]);
 
   return (
     <>
-      <UidContext value={uid}>
-        <AppRouter />
-      </UidContext>
+      <UidContext.Provider value={user?.id || null}>
+        {user && user._id ? (
+          <AppRouter />
+        ) : (
+          <AppRouterNotConnected />
+        )}
+      </UidContext.Provider>
     </>
   )
 }

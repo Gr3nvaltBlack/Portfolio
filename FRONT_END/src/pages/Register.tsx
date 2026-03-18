@@ -8,16 +8,16 @@ import Login from './Login';
 
 const Register = () => {
     const [formSubmit, setFormSubmit] = useState(false);
-    const [pseudo, setPseudo] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
     const handleRegister = async (e: any) => {
         e.preventDefault();
-        console.log('Tentative inscription avec:', { pseudo, email, password });
+        console.log('Tentative inscription avec:', { username, email, password });
 
         try {
-            const resp = await RegisterUser(pseudo, email, password);
+            const resp = await RegisterUser(username, email, password);
             console.log('Réponse RegisterUser:', resp);
 
             if (!resp) {
@@ -47,8 +47,8 @@ const Register = () => {
                     <input
                         type="text"
                         placeholder="Pseudo"
-                        onChange={(e) => setPseudo(e.target.value)}
-                        value={pseudo}
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
                         required 
                     />
                     <FaUser className="icon" />

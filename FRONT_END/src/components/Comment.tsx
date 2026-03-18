@@ -4,10 +4,10 @@ import type { AppDispatch } from "../redux/store";
 import { useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import { addComment, getPosts } from "../actions/post.action";
-
+import './comment.css'
 type User = {
   _id: string;
-  pseudo: string;
+  username: string;
   picture: string;
 };
 
@@ -36,7 +36,7 @@ const CardComment: React.FC<CardCommentProps> = ({ post }) => {
     const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (text) {
-            dispatch(addComment(post._id, userData._id, text, userData.pseudo))
+            dispatch(addComment(post._id, userData._id, text, userData.username))
             .then(()=> dispatch(getPosts(5))) // test pour savoir ????????
             .then(() => setText(''))
         }
@@ -50,19 +50,17 @@ const CardComment: React.FC<CardCommentProps> = ({ post }) => {
                     return (
                         <div
                             className={comment.commenterId === userData._id ?
-                            "comment-container-client" : "comment-container"}
+                            "comment-container-client" : "comment-contain"}
                             key={comment._id}
                         >
                             <div className="left-part-comment">
                                 <img
                                     src={
-                                        usersData
-                                        .find((user: User) => user._id === comment.commenterId)
-                                        ?.picture || ""
+                                        usersData.find((user: User) => user._id === comment.commenterId)?.picture || "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-High-Quality-Image.png"
                                     }
                                     alt="comment-pic"
                                     />
-                            <h3>{comment.commenterPseudo}</h3>
+                            <h4>{comment.commenterPseudo}</h4>
                             </div>
                             <div className="comment-text">
                                 <p>{comment.text}</p>

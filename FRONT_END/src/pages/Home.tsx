@@ -1,6 +1,7 @@
 import './home.css'
 import LeftNav from '../components/LeftNav'
 import Thread from '../components/Thread';
+import NewPost from './NewPost';
 // import NewPost from './NewPost';
 
 

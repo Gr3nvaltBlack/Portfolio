@@ -23,9 +23,11 @@ app.use(cors({
 app.use(express.json()); // Middleware to parse JSON
 app.use('/api/post', postRoutes); // Post routes
 app.use('/api/comment', commentRoutes); // Comment routes
-app.use('/api/users', userRoutes); // Use user routes
+app.use('/api/user', userRoutes); // Use user routes
 app.use('/api/recipes', recipeRoutes); // Recipe routes
 app.use('/api/messages', messageRoutes); // Message routes
+
+app.use('/uploads', express.static('uploads'));
 
 connectDB(); // Connect to the database
 

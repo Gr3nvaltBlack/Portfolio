@@ -55,6 +55,7 @@ exports.userLogin = async (req, res) => {
 
                 // Generate JWT token
                 const token = generateToken(findUser);
+                console.log(token)
 
                 return res.status(200).json({
                         message: 'Connected successfully',
@@ -68,8 +69,15 @@ exports.userLogin = async (req, res) => {
         }
 }
 
+// Verification token and return ID of user connected
+exports.userJwtId = (req, res) => {
+        res.status(200).json({
+                id: req.user.id
+        })
+}
+
 // Get user profile
-exports.getUser = async (req, res) => {
+exports.getUserProfile = async (req, res) => {
         try {
                 const userId = req.user.id;
                 const user = await User.findById(userId).select('-passwordHash');
@@ -87,8 +95,26 @@ exports.getUser = async (req, res) => {
         }
 };
 
+exports.getUser = async (req, res) => {
+        try {
+                const userId = req.params.id;
+                const user = await User.findById(userId).select(['_id', 'username', 'bio', 'followers', 'following', 'createdAt', 'profilePic']);
+                if (!user) {
+                        return res.status(404).json({
+                                message: 'User not found'
+                        });
+                }
+                res.status(200).json(user);
+        } catch (err) {
+                console.log(err);
+                res.status(500).json({
+                        message: 'Internal server error'
+                });
+        }
+};
+
 // Update user profile
-exports.updateUser = async (req, res) => {
+exports.updateProfileUser = async (req, res) => {
         try {
                 const userId = req.user.id;
                 const updates = req.body;
@@ -175,10 +201,10 @@ exports.followUser = async (req, res) => {
                 return res.status(400).json({ message: "You cannot follow yourself" });
                 }
 
-                        const target = await User.findById(targetId);
-                        if (!target) {
+                const target = await User.findById(targetId);
+                if (!target) {
                         return res.status(404).json({ message: "Target user not found" });
-                        }
+                }
 
                 // Add target to my following
                 await User.findByIdAndUpdate(userId, {

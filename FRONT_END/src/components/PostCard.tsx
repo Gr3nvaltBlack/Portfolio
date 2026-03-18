@@ -1,86 +1,71 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import type rootReducer from "../redux/reducers/rootReducer";
-import { isEmpty } from "../hooks/verifData";
+import { useState } from "react";
 import { formatDate } from "../hooks/useDates";
-import FollowHandle from "./Follow.Handle";
 import { BiCommentDetail } from "react-icons/bi";
 import { CiShare2 } from "react-icons/ci";
 import LikeButton from "./LikeButton";
 import { MdSaveAlt } from "react-icons/md";
 import CardComment from "./Comment";
 
+import "./postCard.css"
+import { useSelector } from "react-redux";
+import type rootReducer from "../redux/reducers/rootReducer";
+import FollowHandle from "./Follow.Handle";
+
 const PostCard = ({ post }: { post: any }) => {
-    const [isLoading, setIsLoading] =useState(true)
-    const userData = useSelector((state: ReturnType<typeof rootReducer>) => state.userReducer)
-    const usersData = useSelector((state: ReturnType<typeof rootReducer>) => state.usersReducer)
     const [showComment, setshowComment] = useState(false)
-
-    useEffect(() => {
-        !isEmpty(usersData[0] && setIsLoading(false))
-    }, [usersData])
-
-    // const user = usersData.map((user: any) => {
-    //                                         if (user._id === post.posterId) return user.picture;
-    //                                     }).join('')
-    let user = null;
-    for (const _user of usersData) {
-        if (_user._id == post.posterId) {
-            user = _user;
-            break;
-        }
-    }
-
-    if (!user) return <>User not found</>
-
+    const userData = useSelector((state: ReturnType<typeof rootReducer>) => state.userReducer);
     return (
-        <>
-            <li className="card-container" key={post._id}>
-                {isLoading ? (
-                    <i className="fas fa-spinner fa-spin"></i>
-                ) : (
-                    <div className="card-container">
-                        <div className="card-header">
-                            <img
-                                src={user.picture}
-                                alt="poster-pic"
-                            />
-                            <h3>
-                                {user.pseudo}
-                            </h3>
-                            {post.posterId !== userData._id && (
-                                <FollowHandle idToFollow={post.posterId} typeTofollow={"card"} /> 
-                            )}
-                            <span>{formatDate(post.createdAt)}</span>
-                        </div>
-                        <p>{post.message}</p>
-                        {post.picture &&
-                        <img src={post.picture} alt="card-picture" className="card-picture" />}
-                        {/* {post.video && <iframe></iframe>} */}
-                        <div className="card-footer">
-                            <div className="footer-center">
-                                <div className="left-button">
-                                    <button>
-                                        <LikeButton post={post}/>
-                                    </button>
-                                    <button onClick={() => setshowComment(!setshowComment)}>
-                                        <BiCommentDetail />
-                                        <span>{post.comments.length}</span>
-                                    </button>
-                                    <button>
-                                        <CiShare2 />
-                                    </button>
-                                </div>
-                                <button>
-                                    <MdSaveAlt />
-                                </button>
-                                {showComment && <CardComment post={post} />}
-                            </div>
-                        </div>
-                    </div>
+        <div className="card-container">
+            <div className="card-header">
+                <img
+                    src={post.userId.profilePic 
+                            || 
+                        "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-High-Quality-Image.png"}
+                    alt="Profile"
+                    style={{
+                        width: "50px",
+                        height: "50px"
+                    }}
+                />
+                <div className="card-header_top">
+                    <h3>
+                        {post.userId.username}
+                    </h3>
+                    <span>{formatDate(post.createdAt)}</span>
+                {post.userId._id !== userData._id && (
+                    <FollowHandle idToFollow={post.userId._id} typeTofollow={"card"} /> 
                 )}
-            </li>
-        </>
+                </div>
+            </div>
+            <p>{post.content}</p>
+            {post.media &&
+                <div className="card-image">
+                    <img src={`${import.meta.env.VITE_API_URL}uploads/${post.media}`} alt="card-picture" className="card-picture" />
+                </div>
+            }
+            {/* {post.video && <iframe></iframe>} */}
+            <div className="card-footer">
+                <div className="footer-center">
+                    <div className="left-button">
+                        <button>
+                            <LikeButton post={post}/>
+                        </button>
+                        <button onClick={() => setshowComment(!showComment)}>
+                            <BiCommentDetail size={25} />
+                            <span>{post.comments.length}</span>
+                        </button>
+                        <button>
+                            <CiShare2 size={25} />
+                        </button>
+                    </div>
+                    <button className="right-button">
+                        <MdSaveAlt size={25} />
+                    </button>
+                   
+                </div>
+                 {showComment && <CardComment post={post} />}
+            </div>
+        </div>
     );
 };
 

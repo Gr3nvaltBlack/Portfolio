@@ -11,7 +11,7 @@ import type { AppDispatch } from "../redux/store";
 import { addPost, getPosts } from "../actions/post.action";
 
 
-const NewPost = () => {
+const NewPost = ({ previsualization = false }: { previsualization?: boolean }) => {
     const [isLoading, setisLoading] = useState(true);
     const [message, setMessage] = useState("");
     const [picture, setPicture] = useState<string | null>(null);
@@ -31,9 +31,9 @@ const NewPost = () => {
     const handlePost = async () => {
         if (message || picture) {
             const dataPost = new FormData();
-            dataPost.append('posterId', userData._id);
-            dataPost.append('message', message);
-            if (file) dataPost.append('file', file)
+            // dataPost.append('posterId', userData._id);
+            dataPost.append('content', message);
+            if (file) dataPost.append('media', file)
 
             await dispatch(addPost(dataPost));
             // Sync ours posts
@@ -63,9 +63,9 @@ const NewPost = () => {
                     <>
                         <div className="data-form">
                             <div className="form-user-info">
-                                <img src={userData.picture} alt="user-picture" />
+                                <img src={userData.profilePic} alt="user-picture" />
                                 <NavLink to={"/profile"}>
-                                    <span>{userData.pseudo}</span>
+                                    <span>{userData.username}</span>
                                 </NavLink>
                             </div>
                             <div className="post-form">
@@ -76,26 +76,32 @@ const NewPost = () => {
                                     onChange={(e) => setMessage(e.target.value)}
                                     value={message}
                                 />
-                                {message || picture ? (
-                                    <li className="card-container">
-                                        <div className="card-user">
-                                            <img src={userData.picture} alt="User-pic" />
-                                            <div className="name-date-user">
-                                                <h4>{userData.pseudo}</h4>
-                                                <p>{new Date().toLocaleString()}</p>
+                                
+                                {previsualization && (
+                                    <>
+                                    {message || picture ? (
+                                        <li className="card-container">
+                                            <div className="card-user">
+                                                <img src={userData.profilePic} alt="User-pic" />
+                                                <div className="name-date-user">
+                                                    <h4>{userData.username}</h4>
+                                                    <p>{new Date().toLocaleString()}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="content-message">
-                                            <p>{message}</p>
-                                            {picture && <img src={picture} alt="post-picture" />}
-                                        </div>
-                                    </li>
-                                ) : null}
+                                            <div className="content-message">
+                                                <p>{message}</p>
+                                                {picture && <img src={picture} alt="post-picture" />}
+                                            </div>
+                                        </li>
+                                    ) : null}
+                                    </>
+                                )}
+
                                 <div className="footer-form">
                                     <div className="footer-icon">
                                         {isEmpty(picture) && (
                                             <>
-                                                <SlPicture className='SlPicture'/>
+                                                <SlPicture className='btn-picture' />
                                                 <input
                                                     type="file"
                                                     name="file"
@@ -106,7 +112,7 @@ const NewPost = () => {
                                         )}
                                         {picture && (
                                             <button onClick={() => setPicture(null)} className='TbCameraCancel'>
-                                                <TbCameraCancel />
+                                                <TbCameraCancel size={20} />
                                             </button>
                                         )}
                                     </div>
@@ -114,7 +120,7 @@ const NewPost = () => {
                                     <div className="btn-execut">
                                         {message || picture ? (
                                         <button className="btn-cancel" onClick={cancelPost}>
-                                            <TiDeleteOutline />
+                                            <TiDeleteOutline size={35} />
                                         </button>
                                         ) : null}
                                         <button className="btn-send" onClick={handlePost}>Publier</button>

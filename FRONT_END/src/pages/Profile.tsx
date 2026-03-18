@@ -24,8 +24,10 @@ const Profile = () => {
 
     const handleUpdate = () => {
         if (!bio) return
-        dispatch(UpdateBio(userData._id, bio));
-        setUpdateForm(false);
+        dispatch(UpdateBio(bio)).then(() => {
+            setBio(bio);
+            setUpdateForm(false);
+        });
     }
 
     return (
@@ -44,7 +46,7 @@ const Profile = () => {
                 ></div>
                 <div className="default-image">
                     <img 
-                        src={userData.picture 
+                        src={userData.profilePic 
                             || 
                         "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-High-Quality-Image.png"}
                         alt="Profile"
@@ -56,7 +58,7 @@ const Profile = () => {
                 {/* Profile Information */}
                 <div className="profile-info">
                     <div className="profile-info-left">
-                        <h3>{userData.pseudo}</h3>
+                        <h3>{userData.username}</h3>
                         
                         <nav className="profile-nav">
                             <div className="user-recipe">
@@ -84,7 +86,7 @@ const Profile = () => {
                                                     return (
                                                             <li key={user._id}>
                                                                 <img src={user.picture} alt='user-pic' />
-                                                                <h4>{user.pseudo}</h4>
+                                                                <h4>{user.username}</h4>
                                                                 <div className="follow-handler">
                                                                    <FollowHandle idToFollow={user._id} typeTofollow={'suggestion'} /> 
                                                                 </div>
@@ -109,7 +111,7 @@ const Profile = () => {
                                                     return (
                                                             <li key={user._id}>
                                                                 <img src={user.picture} alt="user-pic" />
-                                                                <h4>{user.pseudo}</h4>
+                                                                <h4>{user.username}</h4>
                                                                 <div className="follow-handler">
                                                                    <FollowHandle idToFollow={user._id} typeTofollow={'suggestion'} /> 
                                                                 </div>
@@ -129,12 +131,12 @@ const Profile = () => {
                         <div className="Update-Bio">
                             <h3>BIO</h3>
                             {updateForm === false && (
-                                <>
+                                <div className='sensei'>
                                     <p>{userData.bio}</p>
                                     <button onClick={() => setUpdateForm(!updateForm)}>
                                         <HiPencil />
                                     </button>
-                                </>
+                                </div>
                             )}
                             {updateForm && (
                                 <div className='Master'>

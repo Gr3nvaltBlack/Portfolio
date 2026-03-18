@@ -51,9 +51,17 @@
 }
 
 .logo-icon h2 {
-    font-weight: 50;
+    font-weight: 300;
+    font-family: 'Open Sans';
     text-align: center;
     color: #6b3e2e;
+}
+
+.nav-right h3 {
+    font-weight: 900;
+    font-size: 20px;
+    font-family: 'Georgia';
+    color: #2F4F4F;
 }
 
 .nav-container ul {
@@ -85,15 +93,14 @@
     */
 
 .left-nav-container {
-     display: flex;
+    display: flex;
     flex-direction: column;
     background-color: #e8d6c1;
     border-radius: 10px;
     margin: 5px;
     gap: 0.5rem;
     border: 1.4px solid #d9e0c0;
-    box-shadow: 0 0 5px #c79b63;
-    z-index: 1;
+    box-shadow: 0 0 5px #c79b63, 5px 10px 18px #878787;
 }
 
 .left-nav-container .left-center-container {
@@ -213,7 +220,7 @@
     background: none;
     border: none;
     color: #ffff;
-    color: #5a3825;
+    color: #6b4935;
 }
 .button_nav:focus, .button_nav:active {
     background: none;

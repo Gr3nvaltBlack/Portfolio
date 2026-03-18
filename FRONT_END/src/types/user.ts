@@ -1,10 +1,10 @@
 export interface User {
   _id: string;
-  pseudo: string;
+  username: string;
   bio: string;
-  picture: string;
   followers: string[];
   following: string[];
   createdAt:string;
   updatedAt:string;
+  profilePic:string;
 }

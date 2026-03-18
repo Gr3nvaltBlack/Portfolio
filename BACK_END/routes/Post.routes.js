@@ -16,8 +16,8 @@ router.put('/:id', postController.updatePost);
 // Route to Delete a post
 router.delete('/:id', postController.deletePost);
 
-router.patch('/:id/like', postController.likePost); // Like a post
-router.patch('/:id/unlike', postController.unlikePost); // Unlike a post
+router.patch('/:id/like', authMiddleware, postController.likePost); // Like a post
+router.patch('/:id/unlike', authMiddleware, postController.unlikePost); // Unlike a post
 
 // Export the router
 module.exports = router;

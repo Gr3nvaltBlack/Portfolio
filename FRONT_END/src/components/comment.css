@@ -1,0 +1,78 @@
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #e8d6c1;
+    border: 1px solid #d9e0c0;
+    margin-top: 10px;
+    border-radius: 10px;
+    gap:0.3rem;
+    /* overflow-y: scroll; */
+}
+
+.comment-container .comment-contain {
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgba(236, 177, 15, 0.568);
+    overflow: hidden;
+    gap: 0.1em;
+}
+
+.comment-contain .left-part-comment {
+    display: flex;
+    /* background-color: chartreuse; */
+}
+
+.left-part-comment img {
+    width: 50px;
+    height: 50px;
+    /* background-color: aqua; */
+    border-radius: 10px;
+    margin-left: 2px;
+}
+
+/* .left-part-comment h4 {
+    
+} */
+
+.comment-contain .comment-text {
+    flex: 1px;
+    width: 100%;
+    flex-direction: row;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    /* background-color:deeppink; */
+}
+
+.comment-text p {
+    margin: 10px;
+    padding: 0 !important;
+}
+
+.comment-container .comment-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 4px;
+}
+
+.comment-form input {
+    border-radius: 10px;
+    width: 65%;
+    background-color: bisque;
+    color: #38512F;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid;
+    &::placeholder {
+        font-family: 'Georgia', serif;
+        color: #38512F;
+        font-weight: 600;
+        font-size: 15px;
+    }
+}

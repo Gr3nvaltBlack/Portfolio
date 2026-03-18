@@ -7,7 +7,6 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    min-height: 100vh;
     height: auto;
     /* background-color: black; */
     margin-top: 60px;
@@ -18,9 +17,8 @@ body {
     flex-direction: column;
     align-items: center;
     width: 95%;
-    min-height: 80vh;
     border-radius: 10px;
-    background-color: blue;
+    background-color: #b9875e;
     gap: 1rem;
     margin-bottom: 30px;
 }
@@ -40,18 +38,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     border-radius: 10px;
-    background-color: aqua;
     object-fit: contain;
+    margin-top: 15px;
+}
+.form-user-info a {
+    margin-top: -10px;
 }
 
 .form-user-info span {
     text-align: center;
     font-size: 19px;
     font-weight: 500;
-    color: #e48f45;
+    color: #2d1501;
 }
 
 .data-form .post-form {
@@ -59,8 +60,7 @@ body {
     flex-direction: column;
     width: 90%;
     border-radius: 10px;
-    background-color: darkmagenta;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     gap: 1rem;
 }
 
@@ -69,11 +69,13 @@ body {
     justify-content: center;
     color: black;
     font-size: 15PX;
-    background-color: aliceblue;
+    background-color: #f0f8ffe3;
     border: 2px solid bisque;
     max-width: 100%;
     min-height: 55px;
     border-radius: 8px;
+    padding: 12px;
+    min-height: 100px;
 }
 
 #message::placeholder {
@@ -187,33 +189,36 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    /* background-color: brown; */
-}
-
-.btn-execut button {
-    display: flex;
-    align-items: center;
-    margin-right: 3px;
-    border: none;
-    background-color: transparent;
+    gap: 20px;
 }
 
 .btn-execut .btn-cancel {
     color: red;
-    border-radius: 50px;
+    border-radius: 10px;
+    background: #ffdd8e;
 }
 
 .btn-execut .btn-send {
     padding: 15px 30px;
     font-size: 18px;
-    color: white;
     cursor: pointer;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
-    transition: 0.3;
-    &:hover {
-        transform: scale(1.02);
-        border: 1px solid salmon;
-    }
+    display: flex;
+    align-items: center;
+    margin-right: 3px;
+    background: #ffdd8e;
+    color: #4d4d4d;
+    font-weight: 600;
+}
+.btn-picture {
+    cursor: pointer;
+    color: #4d4d4d;
+    font-weight: 600;
+    background: #ffdd8e;
+    padding: 9px;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
 }
